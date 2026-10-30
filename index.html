@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>André Viollaz</title>
-<meta name="description" content="André Viollaz — Ciencias de la Computación (UBA). Sistemas, datos e IA.">
+<meta name="description" content="André Viollaz — Computer Science (UBA). Systems, data and AI.">
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz@6..72&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #000;
@@ -18,7 +18,7 @@
     --muted: #8f8c86;
     --dim: #5c5a56;
     --accent: #b9d99a;
-    --serif: "Instrument Serif", Georgia, serif;
+    --serif: "Newsreader", Georgia, serif;
     --sans: Inter, system-ui, sans-serif;
     --mono: "JetBrains Mono", ui-monospace, monospace;
   }
@@ -46,9 +46,9 @@
   @media (max-width: 480px) { section { padding: 44px 22px; } }
 
   h1, h2 { font-family: var(--serif); font-weight: 400; color: var(--text); letter-spacing: -0.01em; }
-  h1 { font-size: 64px; line-height: 1; }
+  h1 { font-size: 54px; line-height: 1.05; }
   h1 span { color: var(--dim); }
-  h2 { font-size: 40px; line-height: 1.1; margin-bottom: 28px; }
+  h2 { font-size: 34px; line-height: 1.1; margin-bottom: 28px; }
   .u { color: var(--text); border-bottom: 1px dashed var(--dim); transition: border-color .2s; }
   a.u:hover { border-color: var(--text); }
   .accent { color: var(--accent); }
@@ -59,7 +59,7 @@
     width: 64px; height: 64px; border-radius: 10px; margin-bottom: 36px;
     display: grid; place-items: center;
     background: #111; border: 1px solid var(--line);
-    font-family: var(--serif); font-size: 28px; color: var(--text);
+    font-family: var(--serif); font-size: 24px; color: var(--text);
   }
   .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
   .intro { margin-top: 28px; font-size: 18px; max-width: 34em; }
@@ -132,56 +132,56 @@
   <div class="hatch"></div>
 
   <section class="fade">
-    <!-- Para usar una foto: subí avatar.jpg al repo y reemplazá "AV" por <img src="avatar.jpg" alt="André"> -->
+    <!-- To use a photo: add avatar.jpg to the repo and replace "AV" with <img src="avatar.jpg" alt="André"> -->
     <div class="avatar">AV</div>
-    <h1>Hola, <span>hello.</span></h1>
+    <h1>Hello, <span>hola.</span></h1>
     <p class="intro">
-      Soy <span class="accent">André</span>, estudiante de Ciencias de la Computación en la UBA.
-      Me tiran los sistemas de bajo nivel, los datos y la IA. De día entreno y evalúo modelos como
-      AI Trainer en Outlier; el resto del tiempo armo cosas.
+      I'm <span class="accent">André</span>, a Computer Science student at the University of Buenos Aires,
+      drawn to low-level systems, data and AI. By day I'm an AI Evaluator &amp; QA at Outlier;
+      the rest of the time I build things.
     </p>
   </section>
 
   <div class="hatch"></div>
 
   <section>
-    <h2>Últimamente</h2>
+    <h2>Lately</h2>
     <div class="row">
-      <span>Encontré un <span class="name">skimmer de tarjetas</span> escondido en los catálogos de Jumbo, Disco y Vea mientras scrapeaba precios. Lo reporté y fue retirado.</span>
+      <span>While scraping grocery prices, I found a <span class="name">card skimmer</span> hidden in the online catalogs of Jumbo, Disco and Vea. I reported it and it was taken down.</span>
     </div>
-    <p class="mono" style="color:var(--dim);margin-top:8px">oct 2026</p>
-    <!-- Cuando salga la nota: <a class="u" href="URL">Leer la nota</a> -->
+    <p class="mono" style="color:var(--dim);margin-top:8px">Oct 2026</p>
+    <!-- When the article is out: <a class="u" href="URL">Read the article</a> -->
   </section>
 
   <div class="hatch"></div>
 
   <section>
-    <h2>Proyectos</h2>
+    <h2>Selected work</h2>
     <div class="rows">
 
       <details>
-        <summary><span class="name u">SmartCart</span><span class="meta mono">backend · datos</span></summary>
+        <summary><span class="name u">SmartCart</span><span class="meta mono">backend · data</span></summary>
         <div class="detail">
-          <p>Optimizador de compras de supermercado. Scrapea precios de varias cadenas, empareja productos con búsqueda vectorial y arma el carrito más barato con programación lineal.</p>
+          <p>A grocery shopping optimizer. It scrapes prices across supermarket chains, matches products with vector search and builds the cheapest cart with linear programming.</p>
           <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · GCP</div>
-          <div class="links"><a class="u" href="https://github.com/aviollaz" target="_blank" rel="noopener">código ↗</a></div>
+          <div class="links"><a class="u" href="https://github.com/aviollaz" target="_blank" rel="noopener">code ↗</a></div>
         </div>
       </details>
 
       <details>
-        <summary><span class="name u">Kernel x86</span><span class="meta mono">sistemas</span></summary>
+        <summary><span class="name u">Kernel x86</span><span class="meta mono">systems</span></summary>
         <div class="detail">
-          <p>Bootloader y kernel desde cero: scheduler, interrupciones, paginación y cuatro tareas corriendo en paralelo.</p>
+          <p>A bootloader and kernel from scratch: scheduler, interrupts, paging and four concurrent tasks.</p>
           <div class="stack">C · x86 Assembly</div>
-          <div class="links"><a class="u" href="https://github.com/aviollaz" target="_blank" rel="noopener">código ↗</a></div>
+          <div class="links"><a class="u" href="https://github.com/aviollaz" target="_blank" rel="noopener">code ↗</a></div>
         </div>
       </details>
 
       <details>
         <summary><span class="name u">Credit Scoring</span><span class="meta mono">ml</span></summary>
         <div class="detail">
-          <p>Pipeline para predecir riesgo crediticio sobre datos de Kaggle: limpieza, feature engineering y XGBoost.</p>
-          <!-- Métricas: completar y descomentar
+          <p>A pipeline that predicts credit risk on Kaggle data: cleaning, feature engineering and XGBoost.</p>
+          <!-- Metrics: fill in and uncomment
           <div class="stack">ROC AUC 0.00 · Precision 0.00 · Recall 0.00</div>
           -->
           <div class="stack">Python · XGBoost · pandas · scikit-learn</div>
@@ -190,19 +190,19 @@
       </details>
 
       <details>
-        <summary><span class="name u">Reseñas IRSA</span><span class="meta mono">automatización</span></summary>
+        <summary><span class="name u">IRSA Reviews</span><span class="meta mono">automation</span></summary>
         <div class="detail">
-          <p>Automatización que responde reseñas de Google Maps, en uso en los shoppings de IRSA.</p>
+          <p>An automation that replies to Google Maps reviews, in use across IRSA shopping malls.</p>
           <div class="stack">Make · LLMs · Google Maps</div>
         </div>
       </details>
 
       <details>
-        <summary><span class="name u">Catering DB</span><span class="meta mono">bases de datos</span></summary>
+        <summary><span class="name u">Catering DB</span><span class="meta mono">databases</span></summary>
         <div class="detail">
-          <p>El framework de bases de datos que construimos en la materia, aplicado a un negocio de catering real.</p>
+          <p>The database framework we built in my Databases course, applied to a real catering business.</p>
           <div class="stack">Python · PostgreSQL</div>
-          <div class="links"><a class="u" href="https://github.com/aviollaz/ssot2026-catering" target="_blank" rel="noopener">código ↗</a></div>
+          <div class="links"><a class="u" href="https://github.com/aviollaz/ssot2026-catering" target="_blank" rel="noopener">code ↗</a></div>
         </div>
       </details>
 
@@ -213,17 +213,17 @@
 
   <section>
     <h2>Open source</h2>
-    <!-- Cuando tengas el link del repo grupal, convertí cada "name" en <a class="name u" href="URL_PR"> -->
-    <div class="row"><span class="name">Endpoints de alta y baja</span><span class="meta mono">framework bd</span></div>
-    <div class="row"><span class="name">Fix en migraciones</span><span class="meta mono">framework bd</span></div>
-    <div class="row"><span class="name">Validación de FK/PK</span><span class="meta mono">framework bd</span></div>
-    <div class="row"><span class="name">Refactor de tests</span><span class="meta mono">framework bd</span></div>
+    <!-- Once you have the group repo link, turn each "name" into <a class="name u" href="URL_PR"> -->
+    <div class="row"><span class="name">Create & delete row endpoints</span><span class="meta mono">db framework</span></div>
+    <div class="row"><span class="name">Migration bug fix</span><span class="meta mono">db framework</span></div>
+    <div class="row"><span class="name">FK/PK validation</span><span class="meta mono">db framework</span></div>
+    <div class="row"><span class="name">Test suite refactor</span><span class="meta mono">db framework</span></div>
   </section>
 
   <div id="contrib" hidden>
     <div class="hatch"></div>
     <section>
-      <h2>Un poco, seguido.</h2>
+      <h2>A little, often.</h2>
       <div class="graph-wrap" id="graphWrap">
         <div class="months" id="months"></div>
         <div class="graph" id="graph"></div>
@@ -237,14 +237,14 @@
   <section>
     <footer class="mono">
       <span class="live" id="clock">Buenos Aires</span>
-      <div class="bottom"><span>© 2026 André Viollaz</span><a href="#">Arriba ↑</a></div>
+      <div class="bottom"><span>© 2026 André Viollaz</span><a href="#">Top ↑</a></div>
     </footer>
   </section>
 
   <div class="hatch"></div>
 </div>
 
-<nav class="dock" aria-label="Contacto">
+<nav class="dock" aria-label="Contact">
   <a href="https://github.com/aviollaz" target="_blank" rel="noopener" aria-label="GitHub">
     <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
   </a>
@@ -254,21 +254,21 @@
   <a href="mailto:fviollaz@dc.uba.ar" aria-label="Email">
     <svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm1 2.4V17h16V7.4l-8 5.3-8-5.3zM5.3 7l6.7 4.4L18.7 7H5.3z"/></svg>
   </a>
-  <!-- CV: subí cv.pdf al repo y descomentá
+  <!-- CV: add cv.pdf to the repo and uncomment
   <a href="cv.pdf" target="_blank" aria-label="CV"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.6l3.3-3.3 1.4 1.4L12 16.4l-5.7-5.7 1.4-1.4L11 12.6V3zM4 18h16v2H4z"/></svg></a>
   -->
 </nav>
 
 <script>
-  // Reloj en vivo (Buenos Aires)
+  // Live clock (Buenos Aires)
   const clock = document.getElementById('clock');
   const tick = () => {
-    const t = new Date().toLocaleTimeString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false });
+    const t = new Date().toLocaleTimeString('en-GB', { timeZone: 'America/Argentina/Buenos_Aires', hour: '2-digit', minute: '2-digit', hour12: false });
     clock.textContent = `${t} · Buenos Aires`;
   };
   tick(); setInterval(tick, 30000);
 
-  // Gráfico de contribuciones de GitHub (datos reales, se cargan en el navegador)
+  // GitHub contribution graph (real data, loaded in the browser)
   const palette = ['#c084fc', '#f472b6', '#38bdf8', '#fb923c', '#a3e635', '#fcd34d', '#818cf8'];
   const hash = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
   fetch('https://github-contributions-api.jogruber.de/v4/aviollaz?y=last')
@@ -284,7 +284,7 @@
       days.forEach((d, i) => {
         const cell = document.createElement('div');
         cell.className = 'cell';
-        cell.title = `${d.count} contribuciones · ${d.date}`;
+        cell.title = `${d.count} contributions · ${d.date}`;
         if (d.level > 0) {
           const c = palette[hash(d.date) % palette.length];
           const o = [0, .35, .6, .85, 1][d.level];
@@ -298,13 +298,13 @@
           lastMonth = dt.getMonth();
           const col = Math.floor((i + pad) / 7);
           const m = document.createElement('span');
-          m.textContent = dt.toLocaleDateString('es-AR', { month: 'short' }).replace('.', '');
+          m.textContent = dt.toLocaleDateString('en-US', { month: 'short' });
           m.style.left = (col * 13) + 'px';
           months.appendChild(m);
         }
       });
       const total = data.total && Object.values(data.total)[0];
-      document.getElementById('graphNote').textContent = `${total ?? days.reduce((a, d) => a + d.count, 0)} contribuciones en el último año`;
+      document.getElementById('graphNote').textContent = `${total ?? days.reduce((a, d) => a + d.count, 0)} contributions in the last year`;
       document.getElementById('contrib').hidden = false;
       const wrap = document.getElementById('graphWrap');
       wrap.scrollLeft = wrap.scrollWidth;
