@@ -204,16 +204,16 @@
       <details>
         <summary><span class="name u">SmartCart</span><span class="meta mono">backend · data</span></summary>
         <div class="detail">
-          <p>A grocery shopping optimizer. It scrapes prices across supermarket chains, matches products with vector search and builds the cheapest cart with linear programming. While scraping, I found a card skimmer hidden in the catalogs of Jumbo, Disco and Vea; I reported it and it was taken down.</p>
-          <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · GCP</div>
-          <div class="links"><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">code ↗</a></div>
+          <p>A grocery shopping optimizer. Every night it scrapes Coto, Día and Carrefour, matches products with vector search, and a constraint solver splits your cart across the chains to spend as little as possible. While scraping, I found a card skimmer hidden in the catalogs of Jumbo, Disco and Vea; I reported it and it was taken down.</p>
+          <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · Cloud Run · GitHub Actions</div>
+          <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">code ↗</a></div>
         </div>
       </details>
 
       <details>
         <summary><span class="name u">Kernel x86</span><span class="meta mono">systems</span></summary>
         <div class="detail">
-          <p>A bootloader and kernel from scratch: scheduler, interrupts, paging and four concurrent tasks.</p>
+          <p>A 32-bit kernel from scratch: protected mode, interrupts, per-task paging, system calls and a preemptive scheduler running four tasks.</p>
           <div class="stack">C · x86 Assembly</div>
           <div class="links"><a class="u" href="https://github.com/aviollaz/miniOS" target="_blank" rel="noopener">code ↗</a></div>
         </div>
@@ -230,8 +230,8 @@
       <details>
         <summary><span class="name u">Catering DB</span><span class="meta mono">databases</span></summary>
         <div class="detail">
-          <p>The database framework we built in my Databases course, applied to a real catering business.</p>
-          <div class="stack">Python · PostgreSQL</div>
+          <p>A team project for my Databases course: a management app for catering companies (orders, recipes, stock and purchasing), built on the class's schema-driven framework.</p>
+          <div class="stack">TypeScript · Node.js · Express · PostgreSQL · Docker</div>
           <div class="links"><a class="u" href="https://github.com/aviollaz/ssot2026-catering" target="_blank" rel="noopener">code ↗</a></div>
         </div>
       </details>
@@ -239,11 +239,9 @@
       <details>
         <summary><span class="name u">Credit Scoring</span><span class="meta mono">ml</span></summary>
         <div class="detail">
-          <p>A pipeline that predicts credit risk on Kaggle data: cleaning, feature engineering and XGBoost.</p>
-          <!-- Metrics: fill in and uncomment
-          <div class="stack">ROC AUC 0.00 · Precision 0.00 · Recall 0.00</div>
-          -->
-          <div class="stack">Python · XGBoost · pandas · scikit-learn</div>
+          <p>Predicts loan default on Kaggle's Home Credit data, from cleaning and feature engineering to an XGBoost model served in a Streamlit dashboard.</p>
+          <div class="stack">Catches 66% of defaulters on a 61,503-application hold-out set</div>
+          <div class="stack">Python · XGBoost · pandas · scikit-learn · Streamlit</div>
           <div class="links"><a class="u" href="https://github.com/aviollaz/end-to-end-credit-scoring" target="_blank" rel="noopener">notebook ↗</a></div>
         </div>
       </details>
