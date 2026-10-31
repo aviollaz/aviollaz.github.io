@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finding a card skimmer while scraping groceries · André Viollaz</title>
+<meta name="description" content="How I found obfuscated card-skimming code in Jumbo, Disco and Vea's online catalogs while building a grocery price optimizer, and what I'm building because of it.">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="I found a card skimmer while scraping grocery prices">
+<meta property="og:description" content="Obfuscated skimming code in Cencosud Argentina's product catalogs: how I found it, how I reported it, and what I'm building next.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz@0,6..72;1,6..72&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000;
+    --line: #2a2a2a;
+    --hatch: #161616;
+    --text: #ece9e2;
+    --muted: #8f8c86;
+    --dim: #5c5a56;
+    --accent: #b9d99a;
+    --serif: "Newsreader", Georgia, serif;
+    --sans: Inter, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--muted);
+    font-family: var(--sans); font-size: 16px; line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #000; }
+
+  .frame {
+    max-width: 680px; margin: 0 auto;
+    border-left: 1px dashed var(--line); border-right: 1px dashed var(--line);
+  }
+  .hatch {
+    height: 48px;
+    border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line);
+    background: repeating-linear-gradient(-45deg, var(--hatch) 0 1px, transparent 1px 9px);
+  }
+  section { padding: 52px 28px; }
+  @media (max-width: 480px) { section { padding: 40px 22px; } }
+
+  .u { color: var(--text); border-bottom: 1px dashed var(--dim); position: relative; }
+  .u::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+    background: var(--text); transform: scaleX(0); transform-origin: right;
+    transition: transform .35s cubic-bezier(.65,0,.35,1);
+  }
+  a.u:hover::after, a.u:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+  .mono { font-family: var(--mono); font-size: 13px; }
+  .accent { color: var(--accent); }
+
+  .back { color: var(--dim); }
+  .back:hover { color: var(--text); }
+
+  header .meta { color: var(--dim); margin-top: 40px; }
+  h1 {
+    font-family: var(--serif); font-weight: 400; color: var(--text);
+    font-size: 42px; line-height: 1.1; letter-spacing: -0.015em; margin-top: 14px;
+  }
+  @media (max-width: 480px) { h1 { font-size: 34px; } }
+  .dek { font-family: var(--serif); font-style: italic; font-size: 20px; line-height: 1.5; color: var(--muted); margin-top: 20px; }
+
+  article h2 {
+    font-family: var(--serif); font-weight: 400; color: var(--text);
+    font-size: 26px; line-height: 1.2; margin: 48px 0 14px;
+  }
+  article h2:first-child { margin-top: 0; }
+  article p { margin-bottom: 18px; }
+  article p:last-child { margin-bottom: 0; }
+  article strong { color: var(--text); font-weight: 500; }
+  article code { font-family: var(--mono); font-size: 13.5px; color: var(--text); background: #111; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+  article ol, article ul { margin: 0 0 18px 0; padding-left: 0; list-style: none; counter-reset: n; }
+  article li { position: relative; padding-left: 30px; margin-bottom: 12px; }
+  article ol li::before {
+    counter-increment: n; content: counter(n, decimal-leading-zero);
+    position: absolute; left: 0; top: 3px; font-family: var(--mono); font-size: 12px; color: var(--accent);
+  }
+  article ul li::before { content: ""; position: absolute; left: 8px; top: 12px; width: 6px; height: 1px; background: var(--accent); }
+
+  .timeline { border-left: 1px dashed var(--line); margin: 6px 0 22px 4px; padding-left: 22px; }
+  .timeline div { position: relative; padding: 4px 0 14px; }
+  .timeline div::before {
+    content: ""; position: absolute; left: -26px; top: 13px; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--bg); border: 1px solid var(--accent);
+  }
+  .timeline div:last-child::before { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .timeline .when { display: block; font-family: var(--mono); font-size: 12px; color: var(--dim); }
+  .timeline .what { color: var(--text); }
+
+  .note {
+    border: 1px dashed var(--line); border-radius: 8px; padding: 16px 18px; margin: 26px 0 0;
+    font-size: 14.5px; color: var(--muted);
+  }
+
+  footer {
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+    gap: 12px 24px; padding: 26px 28px; color: var(--dim); font-size: 13px;
+  }
+  @media (max-width: 480px) { footer { padding: 22px; } }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="hatch"></div>
+
+  <section>
+    <a class="back mono" href="../">← André Viollaz</a>
+    <header>
+      <p class="meta mono">31 Oct 2026 · security · 5 min read</p>
+      <h1>I found a card skimmer while scraping grocery prices</h1>
+      <p class="dek">Obfuscated card-skimming code was sitting in product descriptions across Jumbo, Disco and Vea. I wasn't looking for it. I was building a price comparison tool.</p>
+    </header>
+  </section>
+
+  <div class="hatch"></div>
+
+  <section>
+    <article>
+      <h2>Why I was reading product HTML at all</h2>
+      <p><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">SmartCart</a> finds the cheapest way to fill a grocery cart across Argentine supermarkets. Scrapers run on a schedule, products get matched across stores with vector search, and a constraint solver splits the cart to spend as little as possible.</p>
+      <p>Scraping means pulling every field of every product, descriptions included. Descriptions are supposed to be marketing copy: ingredients, sizes, a sentence or two about the product. Mine kept coming back with something else in them.</p>
+
+      <h2>What was in the descriptions</h2>
+      <p>The text field contained executable, obfuscated JavaScript. It wasn't one careless listing. The same code appeared across the catalogs of all three Cencosud Argentina stores: <strong>Jumbo, Disco and Vea</strong>.</p>
+      <p>That pattern mattered more than any single snippet. One odd description is a seller's mistake. The same payload across three stores' shared catalogs points to something injected deliberately, at scale.</p>
+
+      <h2>Being sure before saying anything</h2>
+      <p>Obfuscated code on a store page is not proof of an attack. Analytics, A/B testing and tag managers all ship minified, hard-to-read scripts. Before reporting, I wanted solid answers to three questions:</p>
+      <ol>
+        <li><strong>What does it do?</strong> Once deobfuscated, its purpose was to capture payment card data entered by shoppers.</li>
+        <li><strong>Does it belong there?</strong> No. Product descriptions are content, not code. Nothing legitimate needs to run from that field.</li>
+        <li><strong>How far does it reach?</strong> Every store in the group I checked, not one page or one product.</li>
+      </ol>
+      <p>Once all three pointed the same way, I stopped investigating. I didn't place test orders or interact with whatever was receiving the data. The goal was to be certain enough to report, not to poke at live infrastructure.</p>
+
+      <h2>Disclosure</h2>
+      <p>I reported it privately and published nothing until the code was gone.</p>
+      <div class="timeline">
+        <div><span class="when">14 Oct 2026</span><span class="what">Reported to Cencosud's security team</span></div>
+        <div><span class="when">Oct 2026</span><span class="what">Escalated to Argentina's national cybersecurity unit</span></div>
+        <div><span class="when">Oct 2026</span><span class="what">The code was removed from the catalogs</span></div>
+      </div>
+      <p>Having the scraper made one part easy: I could re-run it and confirm the descriptions were clean, instead of taking anyone's word for it.</p>
+
+      <h2>Why something like this goes unnoticed</h2>
+      <p>The injection point was content, not code. Security reviews tend to watch a site's own JavaScript and its dependencies. Product descriptions are treated as data: edited by many people, stored in a CMS, and rendered as HTML on every product page. Three takeaways for anyone running a store:</p>
+      <ul>
+        <li><strong>Rich-text fields are an attack surface.</strong> If a description can carry a <code>&lt;script&gt;</code>, eventually one will. Sanitize on save and on render.</li>
+        <li><strong>A strict Content Security Policy is cheap insurance.</strong> Blocking inline scripts and unknown destinations breaks this class of skimmer even after it's injected.</li>
+        <li><strong>Watch what the page actually runs, not just what you deploy.</strong> The code that ran in shoppers' browsers here never went through a code review.</li>
+      </ul>
+
+      <h2>What I'm building because of it</h2>
+      <p>I found this one by accident, because a side project happened to read every product page. That seemed like a bad way to rely on finding the next one.</p>
+      <p>So I'm building <strong>SkimWatch</strong>: a crawler that scans online stores every night for client-side attacks like this one. A few early decisions:</p>
+      <ul>
+        <li><strong>Narrow before wide.</strong> The whole pipeline, from crawl to detection to alert, works end to end on a small set of stores before I add more. A detector that's never been tested on real pages is worth less than broad coverage of nothing.</li>
+        <li><strong>Go.</strong> Crawling many pages concurrently is the core workload. It's also a language I wanted to learn, and a real project is the best way.</li>
+        <li><strong>Boring infrastructure.</strong> Nightly runs on GitHub Actions, results in Postgres on Neon. It's the setup SmartCart's scrapers already ran on, so I know where it breaks.</li>
+      </ul>
+      <p>The hard problem is false positives: legitimate tools inject and obfuscate scripts all the time. Telling a tag manager from a skimmer is the part I'm still working out, and the part I find most interesting.</p>
+
+      <p class="note">I've deliberately left out the payload, how it was obfuscated, and where it sent data. This post is about how the problem was found and handled, not a recipe for repeating it.</p>
+    </article>
+  </section>
+
+  <div class="hatch"></div>
+
+  <footer class="mono">
+    <a href="../">← All work</a>
+    <a href="mailto:fviollaz@dc.uba.ar">fviollaz@dc.uba.ar</a>
+  </footer>
+
+  <div class="hatch"></div>
+</div>
+</body>
+</html>
