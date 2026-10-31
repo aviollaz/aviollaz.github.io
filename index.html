@@ -122,15 +122,6 @@
   }
   @media (max-width: 480px) { footer { padding: 22px; } }
   .foot-left, .foot-right { display: flex; align-items: center; gap: 22px; }
-  .sound {
-    display: inline-flex; align-items: center; gap: 7px; background: none; border: 0; padding: 0;
-    font: inherit; color: var(--dim); cursor: pointer;
-  }
-  .sound:hover { color: var(--text); }
-  .sound svg { width: 15px; height: 15px; fill: currentColor; }
-  .sound .wave { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; opacity: .25; transition: opacity .2s; }
-  .sound[aria-pressed="true"] { color: var(--accent); }
-  .sound[aria-pressed="true"] .wave { opacity: 1; }
   footer .live::before {
     content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
     background: var(--accent); margin-right: 10px; vertical-align: middle;
@@ -287,10 +278,6 @@
   <footer class="mono">
     <div class="foot-left">
       <span class="live" id="clock">Buenos Aires</span>
-      <button class="sound" id="soundBtn" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="wave" d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12"/></svg>
-        <span id="soundLbl">Sound off</span>
-      </button>
     </div>
     <div class="foot-right"><span>© 2026 André Viollaz</span><a href="#">Top ↑</a></div>
   </footer>
@@ -376,49 +363,6 @@
 
 
 
-  // Sounds (off by default, synthesized with Web Audio)
-  const sfx = (() => {
-    let on = false, ctx = null;
-    try { on = localStorage.getItem('sound') === 'on'; } catch (e) {}
-    const btn = document.getElementById('soundBtn'), lbl = document.getElementById('soundLbl');
-    const ac = () => (ctx ||= new (window.AudioContext || window.webkitAudioContext)());
-    const tone = (f1, f2, dur, type = 'sine', vol = .04, delay = 0) => {
-      if (!on) return;
-      const a = ac(), t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
-      o.type = type; o.frequency.setValueAtTime(f1, t); o.frequency.exponentialRampToValueAtTime(f2, t + dur);
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .008); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
-      o.connect(g).connect(a.destination); o.start(t); o.stop(t + dur + .02);
-    };
-    let hum = null;
-    const api = {
-      tick: () => tone(2400, 1800, .04, 'sine', .018),
-      pop: open => open ? tone(420, 640, .09, 'triangle', .05) : tone(560, 360, .09, 'triangle', .04),
-      holdStart: () => {
-        if (!on) return; api.holdStop();
-        const a = ac(), o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
-        o.type = 'sine'; o.frequency.setValueAtTime(220, t); o.frequency.linearRampToValueAtTime(440, t + 1);
-        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.035, t + 1);
-        o.connect(g).connect(a.destination); o.start(t); hum = { o, g };
-      },
-      holdStop: () => {
-        if (!hum) return; const a = ac(), t = a.currentTime;
-        hum.g.gain.cancelScheduledValues(t); hum.g.gain.setValueAtTime(hum.g.gain.value, t); hum.g.gain.linearRampToValueAtTime(0, t + .08);
-        hum.o.stop(t + .1); hum = null;
-      },
-      chime: () => { tone(660, 660, .35, 'sine', .05); tone(990, 990, .5, 'sine', .04, .09); }
-    };
-    const render = () => { btn.setAttribute('aria-pressed', on); lbl.textContent = on ? 'Sound on' : 'Sound off'; };
-    btn.addEventListener('click', () => {
-      on = !on; render();
-      try { localStorage.setItem('sound', on ? 'on' : 'off'); } catch (e) {}
-      if (on) { ac().resume(); api.chime(); }
-    });
-    render();
-    document.querySelectorAll('a.u, summary .name, .dock a, footer a').forEach(el => el.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') api.tick(); }));
-    document.querySelectorAll('details').forEach(d => d.addEventListener('toggle', () => api.pop(d.open)));
-    return api;
-  })();
-
   // Hold-to-download CV
   (() => {
     const btn = document.getElementById('cvBtn'), tip = document.getElementById('cvTip');
@@ -427,10 +371,10 @@
       if (e.type === 'keydown' && (e.repeat || (e.key !== 'Enter' && e.key !== ' '))) return;
       e.preventDefault(); if (timer) return;
       clearTimeout(resetT); btn.classList.remove('done'); btn.classList.add('holding');
-      tip.textContent = 'Keep holding…'; sfx.holdStart();
+      tip.textContent = 'Keep holding…';
       timer = setTimeout(() => {
         timer = null; btn.classList.remove('holding'); btn.classList.add('done');
-        tip.textContent = 'Downloading'; sfx.holdStop(); sfx.chime();
+        tip.textContent = 'Downloading';
         const a = document.createElement('a'); a.href = btn.getAttribute('href'); a.download = 'Andre_Viollaz_CV.pdf';
         document.body.appendChild(a); a.click(); a.remove();
         if (navigator.vibrate) navigator.vibrate(30);
@@ -439,7 +383,7 @@
     };
     const cancel = () => {
       if (!timer) return; clearTimeout(timer); timer = null;
-      btn.classList.remove('holding'); tip.textContent = 'Hold to download'; sfx.holdStop();
+      btn.classList.remove('holding'); tip.textContent = 'Hold to download';
     };
     btn.addEventListener('click', e => e.preventDefault());
     btn.addEventListener('contextmenu', e => e.preventDefault());
