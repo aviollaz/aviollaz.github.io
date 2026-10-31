@@ -35,8 +35,12 @@
   #bg {
     position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -1;
     image-rendering: pixelated; opacity: .55;
-    -webkit-mask-image: radial-gradient(ellipse at center, transparent 30%, #000 75%);
-            mask-image: radial-gradient(ellipse at center, transparent 30%, #000 75%);
+    --fade: linear-gradient(to right,
+      #000 0, #000 calc(50% - 340px - 320px),
+      transparent calc(50% - 340px),
+      transparent calc(50% + 340px),
+      #000 calc(50% + 340px + 320px), #000 100%);
+    -webkit-mask-image: var(--fade); mask-image: var(--fade);
   }
   .frame {
     position: relative; background: var(--bg);
