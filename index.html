@@ -36,22 +36,23 @@
     position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -1;
     image-rendering: pixelated; opacity: .55;
     --fade: linear-gradient(to right,
-      #000 0, #000 calc(50% - 340px - 320px),
-      transparent calc(50% - 340px),
-      transparent calc(50% + 340px),
-      #000 calc(50% + 340px + 320px), #000 100%);
+      #000 0, #000 calc(50% - 380px - 420px),
+      transparent calc(50% - 380px),
+      transparent calc(50% + 380px),
+      #000 calc(50% + 380px + 420px), #000 100%);
     -webkit-mask-image: var(--fade); mask-image: var(--fade);
   }
   .frame {
-    position: relative; background: var(--bg);
+    position: relative;
     max-width: 680px; margin: 0 auto;
-    border-left: 1px dashed var(--line); border-right: 1px dashed var(--line);
     padding-bottom: 120px;
   }
   .hatch {
     height: 48px;
     border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line);
     background: repeating-linear-gradient(-45deg, var(--hatch) 0 1px, transparent 1px 9px);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+            mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
   }
   section { padding: 52px 28px; }
   @media (max-width: 480px) { section { padding: 44px 22px; } }
