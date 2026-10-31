@@ -66,7 +66,7 @@
     background: var(--text); transform: scaleX(0); transform-origin: right;
     transition: transform .35s cubic-bezier(.65,0,.35,1);
   }
-  a.u:hover::after, a.u:focus-visible::after, summary:hover .u::after, details[open] summary .u::after {
+  a.u:hover::after, a.u:focus-visible::after, summary .name:hover::after, details[open] summary .u::after {
     transform: scaleX(1); transform-origin: left;
   }
   a.name.u .arrow { position: absolute; right: -18px; top: 0; color: var(--dim); opacity: 0; transform: translate(-3px, 3px); transition: opacity .25s, transform .25s; }
@@ -88,12 +88,12 @@
   .rows { display: grid; }
   details { border-bottom: 1px solid transparent; }
   summary {
-    list-style: none; cursor: pointer;
+    list-style: none; pointer-events: none;
     display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
     padding: 6px 0;
   }
   summary::-webkit-details-marker { display: none; }
-  summary .name { font-size: 16.5px; }
+  summary .name { font-size: 16.5px; pointer-events: auto; cursor: pointer; }
   summary .meta { color: var(--dim); white-space: nowrap; }
   details[open] summary .name { border-color: var(--text); }
   .detail { padding: 6px 0 22px; font-size: 14.5px; }
@@ -200,7 +200,7 @@
       <details>
         <summary><span class="name u">SmartCart</span><span class="meta mono">backend · data</span></summary>
         <div class="detail">
-          <p>A grocery shopping optimizer. It scrapes prices across supermarket chains, matches products with vector search and builds the cheapest cart with linear programming.</p>
+          <p>A grocery shopping optimizer. It scrapes prices across supermarket chains, matches products with vector search and builds the cheapest cart with linear programming. While scraping, I found a card skimmer hidden in the catalogs of Jumbo, Disco and Vea; I reported it and it was taken down.</p>
           <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · GCP</div>
           <div class="links"><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">code ↗</a></div>
         </div>
@@ -245,17 +245,6 @@
       </details>
 
     </div>
-  </section>
-
-  <div class="hatch"></div>
-
-  <section>
-    <h2>Lately</h2>
-    <div class="row">
-      <span>While scraping grocery prices, I found a <span class="name">card skimmer</span> hidden in the online catalogs of Jumbo, Disco and Vea. I reported it and it was taken down.</span>
-    </div>
-    <p class="mono" style="color:var(--dim);margin-top:8px">Oct 2026</p>
-    <!-- When the article is out: <a class="u" href="URL">Read the article</a> -->
   </section>
 
   <div class="hatch"></div>
