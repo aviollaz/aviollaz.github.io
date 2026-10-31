@@ -127,6 +127,34 @@
   .dock a:hover { background: #262626; color: var(--text); }
   .dock svg { width: 21px; height: 21px; fill: currentColor; }
 
+
+  /* Hold-to-download */
+  .dock a.hold { position: relative; overflow: visible; -webkit-touch-callout: none; user-select: none; touch-action: none; }
+  .hold-fill {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: var(--accent); opacity: .18;
+    transform: scale(0); transition: transform .25s ease;
+  }
+  .hold-ring { position: absolute; inset: 0; width: 46px !important; height: 46px !important; transform: rotate(-90deg); fill: none !important; }
+  .hold-ring circle {
+    fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round;
+    stroke-dasharray: 135.1; stroke-dashoffset: 135.1;
+    transition: stroke-dashoffset .25s ease;
+  }
+  .hold-icon { position: relative; transition: transform .2s; }
+  .hold.holding .hold-fill { transform: scale(1); transition: transform 1s linear; }
+  .hold.holding .hold-ring circle { stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
+  .hold.holding .hold-icon { transform: translateY(2px); }
+  .hold.done .hold-fill { transform: scale(1); opacity: .35; }
+  .hold.done .hold-ring circle { stroke-dashoffset: 0; }
+  .hold.done { color: var(--accent) !important; }
+  .hold-tip {
+    position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translate(-50%, 4px);
+    white-space: nowrap; font-size: 12px; color: var(--text);
+    background: #161616; border: 1px solid #2f2f2f; border-radius: 8px; padding: 5px 10px;
+    opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+  }
+  .hold:hover .hold-tip, .hold.holding .hold-tip, .hold.done .hold-tip { opacity: 1; transform: translate(-50%, 0); }
   @media (prefers-reduced-motion: no-preference) {
     .fade { animation: fade .7s ease both; }
     .fade:nth-of-type(2) { animation-delay: .08s; }
@@ -263,7 +291,12 @@
   <a href="mailto:fviollaz@dc.uba.ar" aria-label="Email">
     <svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm1 2.4V17h16V7.4l-8 5.3-8-5.3zM5.3 7l6.7 4.4L18.7 7H5.3z"/></svg>
   </a>
-  <a href="Andre_Viollaz_CV.pdf" target="_blank" rel="noopener" aria-label="Download CV" title="Download CV"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.6l3.3-3.3 1.4 1.4L12 16.4l-5.7-5.7 1.4-1.4L11 12.6V3zM4 18h16v2H4z"/></svg></a>
+  <a href="Andre_Viollaz_CV.pdf" class="hold" id="cvBtn" aria-label="Hold to download CV" role="button">
+    <span class="hold-fill"></span>
+    <svg class="hold-ring" viewBox="0 0 46 46"><circle cx="23" cy="23" r="21.5"/></svg>
+    <svg class="hold-icon" viewBox="0 0 24 24"><path d="M11 3h2v9.6l3.3-3.3 1.4 1.4L12 16.4l-5.7-5.7 1.4-1.4L11 12.6V3zM4 18h16v2H4z"/></svg>
+    <span class="hold-tip mono" id="cvTip">Hold to download</span>
+  </a>
 </nav>
 
 <script>
@@ -306,6 +339,38 @@
     let last = 0;
     const loop = t => { if (t - last > 80 && !document.hidden) { draw(t); last = t; } requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
+  })();
+
+
+  // Hold-to-download CV
+  (() => {
+    const btn = document.getElementById('cvBtn'), tip = document.getElementById('cvTip');
+    const HOLD = 1000; let timer = null, resetT = null;
+    const start = e => {
+      if (e.type === 'keydown' && (e.repeat || (e.key !== 'Enter' && e.key !== ' '))) return;
+      e.preventDefault(); if (timer) return;
+      clearTimeout(resetT); btn.classList.remove('done'); btn.classList.add('holding');
+      tip.textContent = 'Keep holding…';
+      timer = setTimeout(() => {
+        timer = null; btn.classList.remove('holding'); btn.classList.add('done');
+        tip.textContent = 'Downloading';
+        const a = document.createElement('a'); a.href = btn.getAttribute('href'); a.download = 'Andre_Viollaz_CV.pdf';
+        document.body.appendChild(a); a.click(); a.remove();
+        if (navigator.vibrate) navigator.vibrate(30);
+        resetT = setTimeout(() => { btn.classList.remove('done'); tip.textContent = 'Hold to download'; }, 1800);
+      }, HOLD);
+    };
+    const cancel = () => {
+      if (!timer) return; clearTimeout(timer); timer = null;
+      btn.classList.remove('holding'); tip.textContent = 'Hold to download';
+    };
+    btn.addEventListener('click', e => e.preventDefault());
+    btn.addEventListener('contextmenu', e => e.preventDefault());
+    btn.addEventListener('pointerdown', start);
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => btn.addEventListener(ev, cancel));
+    btn.addEventListener('keydown', start);
+    btn.addEventListener('keyup', cancel);
+    btn.addEventListener('blur', cancel);
   })();
 
   // Live clock (Buenos Aires)
