@@ -26,7 +26,7 @@
   html { scroll-behavior: smooth; }
   body {
     background: var(--bg); color: var(--muted);
-    font-family: var(--sans); font-size: 16px; line-height: 1.75;
+    font-family: var(--sans); font-size: 15px; line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
   a { color: inherit; text-decoration: none; }
@@ -53,9 +53,9 @@
   @media (max-width: 480px) { section { padding: 44px 22px; } }
 
   h1, h2 { font-family: var(--serif); font-weight: 400; color: var(--text); letter-spacing: -0.01em; }
-  h1 { font-size: 54px; line-height: 1.05; }
+  h1 { font-size: 50px; line-height: 1.05; }
   h1 span { color: var(--dim); }
-  h2 { font-size: 34px; line-height: 1.1; margin-bottom: 28px; }
+  h2 { font-size: 31px; line-height: 1.1; margin-bottom: 28px; }
   .u { color: var(--text); border-bottom: 1px dashed var(--dim); transition: border-color .2s; }
   a.u:hover { border-color: var(--text); }
   .accent { color: var(--accent); }
@@ -69,7 +69,7 @@
     font-family: var(--serif); font-size: 24px; color: var(--text);
   }
   .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-  .intro { margin-top: 28px; font-size: 18px; max-width: 34em; }
+  .intro { margin-top: 26px; font-size: 16.5px; max-width: 34em; }
 
   /* Rows */
   .rows { display: grid; }
@@ -80,10 +80,10 @@
     padding: 6px 0;
   }
   summary::-webkit-details-marker { display: none; }
-  summary .name { font-size: 18px; }
+  summary .name { font-size: 16.5px; }
   summary .meta { color: var(--dim); white-space: nowrap; }
   details[open] summary .name { border-color: var(--text); }
-  .detail { padding: 6px 0 22px; font-size: 15px; }
+  .detail { padding: 6px 0 22px; font-size: 14.5px; }
   .detail p { max-width: 34em; }
   .stack { margin-top: 10px; color: var(--dim); font-family: var(--mono); font-size: 12.5px; }
   .links { margin-top: 10px; display: flex; gap: 18px; font-size: 14px; }
@@ -150,16 +150,6 @@
     </p>
   </section>
 
-  <div class="hatch"></div>
-
-  <section>
-    <h2>Lately</h2>
-    <div class="row">
-      <span>While scraping grocery prices, I found a <span class="name">card skimmer</span> hidden in the online catalogs of Jumbo, Disco and Vea. I reported it and it was taken down.</span>
-    </div>
-    <p class="mono" style="color:var(--dim);margin-top:8px">Oct 2026</p>
-    <!-- When the article is out: <a class="u" href="URL">Read the article</a> -->
-  </section>
 
   <div class="hatch"></div>
 
@@ -215,6 +205,17 @@
       </details>
 
     </div>
+  </section>
+
+  <div class="hatch"></div>
+
+  <section>
+    <h2>Lately</h2>
+    <div class="row">
+      <span>While scraping grocery prices, I found a <span class="name">card skimmer</span> hidden in the online catalogs of Jumbo, Disco and Vea. I reported it and it was taken down.</span>
+    </div>
+    <p class="mono" style="color:var(--dim);margin-top:8px">Oct 2026</p>
+    <!-- When the article is out: <a class="u" href="URL">Read the article</a> -->
   </section>
 
   <div class="hatch"></div>
