@@ -126,10 +126,10 @@
     <article>
       <h2>Why I was reading product HTML at all</h2>
       <p><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">SmartCart</a> finds the cheapest way to fill a grocery cart across Argentine supermarkets. Scrapers run on a schedule, products get matched across stores with vector search, and a constraint solver splits the cart to spend as little as possible.</p>
-      <p>Scraping means pulling every field of every product, descriptions included. Descriptions are supposed to be marketing copy: ingredients, sizes, a sentence or two about the product. Mine kept coming back with something else in them.</p>
+      <p>Vea, a Cencosud chain, was one of the stores. Its catalog runs on VTEX, and the scraper pulled every field of every product from it, descriptions included: over 20,000 products per sweep. Descriptions are supposed to be marketing copy: ingredients, sizes, a sentence or two about the product. Some of Vea's came back with something else in them.</p>
 
       <h2>What was in the descriptions</h2>
-      <p>The text field contained executable, obfuscated JavaScript. It wasn't one careless listing. The same code appeared across the catalogs of all three Cencosud Argentina stores: <strong>Jumbo, Disco and Vea</strong>.</p>
+      <p>The text field contained executable, obfuscated JavaScript. It wasn't one careless listing. The same code appeared across many products, and checking Cencosud Argentina's other stores turned it up there too: <strong>Jumbo, Disco and Vea</strong> all carried it.</p>
       <p>That pattern mattered more than any single snippet. One odd description is a seller's mistake. The same payload across three stores' shared catalogs points to something injected deliberately, at scale.</p>
 
       <h2>Being sure before saying anything</h2>
@@ -137,7 +137,7 @@
       <ol>
         <li><strong>What does it do?</strong> Once deobfuscated, its purpose was to capture payment card data entered by shoppers.</li>
         <li><strong>Does it belong there?</strong> No. Product descriptions are content, not code. Nothing legitimate needs to run from that field.</li>
-        <li><strong>How far does it reach?</strong> Every store in the group I checked, not one page or one product.</li>
+        <li><strong>How far does it reach?</strong> Three stores and many products, not one page or one careless listing.</li>
       </ol>
       <p>Once all three pointed the same way, I stopped investigating. I didn't place test orders or interact with whatever was receiving the data. The goal was to be certain enough to report, not to poke at live infrastructure.</p>
 
@@ -146,9 +146,12 @@
       <div class="timeline">
         <div><span class="when">14 Oct 2026</span><span class="what">Reported to Cencosud's security team</span></div>
         <div><span class="when">Oct 2026</span><span class="what">Escalated to Argentina's national cybersecurity unit</span></div>
+        <div><span class="when">19 Oct 2026</span><span class="what">Took Vea out of SmartCart while it was still affected</span></div>
+        <div><span class="when">27 Oct 2026</span><span class="what">Re-scan: still present in 5 of 20,756 Vea products</span></div>
         <div><span class="when">Oct 2026</span><span class="what">The code was removed from the catalogs</span></div>
       </div>
-      <p>Having the scraper made one part easy: I could re-run it and confirm the descriptions were clean, instead of taking anyone's word for it.</p>
+      <p>Having the scraper made one part easy: I could re-run it and measure the cleanup, product by product, instead of taking anyone's word for it. That's how the five stragglers showed up after most of it was gone.</p>
+      <p>SmartCart itself was never a carrier. It flattens every description to plain text before storing it, because rendering a third party's HTML hands them your page. Vea came back to the app afterwards, but off by default, with a warning users see before turning it on.</p>
 
       <h2>Why something like this goes unnoticed</h2>
       <p>The injection point was content, not code. Security reviews tend to watch a site's own JavaScript and its dependencies. Product descriptions are treated as data: edited by many people, stored in a CMS, and rendered as HTML on every product page. Three takeaways for anyone running a store:</p>
