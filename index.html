@@ -60,8 +60,17 @@
   h1 { font-size: 50px; line-height: 1.05; }
   h1 span { color: var(--dim); }
   h2 { font-size: 31px; line-height: 1.1; margin-bottom: 28px; }
-  .u { color: var(--text); border-bottom: 1px dashed var(--dim); transition: border-color .2s; }
-  a.u:hover { border-color: var(--text); }
+  .u { color: var(--text); border-bottom: 1px dashed var(--dim); position: relative; }
+  .u::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+    background: var(--text); transform: scaleX(0); transform-origin: right;
+    transition: transform .35s cubic-bezier(.65,0,.35,1);
+  }
+  a.u:hover::after, a.u:focus-visible::after, summary:hover .u::after, details[open] summary .u::after {
+    transform: scaleX(1); transform-origin: left;
+  }
+  a.name.u .arrow { position: absolute; right: -18px; top: 0; color: var(--dim); opacity: 0; transform: translate(-3px, 3px); transition: opacity .25s, transform .25s; }
+  a.name.u:hover .arrow { opacity: 1; transform: none; }
   .accent { color: var(--accent); }
   .mono { font-family: var(--mono); font-size: 14px; }
 
@@ -253,10 +262,10 @@
 
   <section>
     <h2>Open source</h2>
-    <!-- Once you have the group repo link, turn each "name" into <a class="name u" href="URL_PR"> -->
+    <!-- To link a PR: <a class="name u" href="PR_URL" target="_blank" rel="noopener">Title<span class="arrow">↗</span></a> and put "#NUMBER · " in the meta -->
     <div class="row"><span class="name">Create & delete row endpoints</span><span class="meta mono">db framework</span></div>
     <div class="row"><span class="name">Migration bug fix</span><span class="meta mono">db framework</span></div>
-    <div class="row"><span class="name" href="https://github.com/ari-dc-uba-ar/ssot2026/pull/33">FK/PK validation</span><span class="meta mono">db framework</span></div>
+    <div class="row"><a class="name u" href="https://github.com/ari-dc-uba-ar/ssot2026/pull/33" target="_blank" rel="noopener">FK/PK validation<span class="arrow">↗</span></a><span class="meta mono">#33 · db framework</span></div>
     <div class="row"><span class="name">Test suite refactor</span><span class="meta mono">db framework</span></div>
   </section>
 
