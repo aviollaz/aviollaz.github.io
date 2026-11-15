@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>André Viollaz</title>
-<meta name="description" content="André Viollaz — Computer Science (UBA). Systems, data and AI.">
+<meta name="description" content="André Viollaz — Computer Science (UBA). Systems, data, AI and security.">
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,7 +99,8 @@
   .detail { padding: 6px 0 22px; font-size: 14.5px; }
   .detail p { max-width: 34em; }
   .stack { margin-top: 10px; color: var(--dim); font-family: var(--mono); font-size: 12.5px; }
-  .links { margin-top: 10px; display: flex; gap: 18px; font-size: 14px; }
+  .links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 14px; }
+  .links a { white-space: nowrap; }
 
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 6px 0; }
   .row .meta { color: var(--dim); white-space: nowrap; }
@@ -190,7 +191,7 @@
     <h1>André Viollaz</h1>
     <p class="intro">
       I'm <span class="accent">André</span>, a Computer Science student at the University of Buenos Aires,
-      drawn to low-level systems, data and AI. I currently work as an AI Evaluator &amp; QA at Outlier.
+      drawn to low-level systems, data, AI and security. I currently work as an AI Evaluator &amp; QA at Outlier.
     </p>
   </section>
 
@@ -204,9 +205,18 @@
       <details>
         <summary><span class="name u">SmartCart</span><span class="meta mono">backend · data</span></summary>
         <div class="detail">
-          <p>A grocery shopping optimizer. Every night it scrapes Coto, Día and Carrefour, matches products with vector search, and a constraint solver splits your cart across the chains to spend as little as possible. While scraping, I <a class="u" href="writing/cencosud-skimmer.html">found a card skimmer</a> hidden in the catalogs of Jumbo, Disco and Vea; I reported it and it was taken down.</p>
+          <p>A grocery shopping optimizer. Every night it scrapes Coto, Día and Carrefour, matches products with vector search, and a constraint solver splits your cart across the chains to spend as little as possible. While scraping, I <a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener">found a card skimmer</a> hidden in the catalogs of Jumbo, Disco and Vea; I reported it and it was taken down (featured in <a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener">Dark News</a>).</p>
           <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · Cloud Run · GitHub Actions</div>
-          <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">code ↗</a><a class="u" href="writing/cencosud-skimmer.html">the skimmer story →</a></div>
+          <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">code ↗</a><a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener">the skimmer story ↗</a></div>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="name u">skimwatch</span><span class="meta mono">security</span></summary>
+        <div class="detail">
+          <p>A scanner that detects injected code in online store catalogs. Built after the skimmer finding, I used it to survey 35 Argentine stores running on VTEX.</p>
+          <div class="stack">Go · PostgreSQL · GitHub Actions</div>
+          <div class="links"><a class="u" href="https://github.com/aviollaz/skimwatch" target="_blank" rel="noopener">code ↗</a></div>
         </div>
       </details>
 
