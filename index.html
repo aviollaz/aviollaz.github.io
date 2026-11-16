@@ -69,7 +69,6 @@
     background: repeating-linear-gradient(-45deg, rgba(180,83,42,.16) 0 1px, transparent 1px 9px);
   }
   :root[data-theme="light"] .intro .accent { font-family: var(--serif); font-style: italic; font-size: 1.12em; line-height: 1; }
-  :root[data-theme="light"] .cell[style*="background"] { box-shadow: none !important; filter: saturate(.85) brightness(.9); }
   :root[data-theme="light"] footer .live::before { box-shadow: 0 0 0 3px rgba(180,83,42,.15); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -157,12 +156,21 @@
   .row .name { color: var(--text); }
 
   /* Contribution graph */
-  .graph-wrap { overflow-x: auto; scrollbar-width: none; margin-right: -28px; padding-right: 28px; }
+  .graph-wrap { overflow-x: auto; scrollbar-width: none; margin: -10px -28px -10px -10px; padding: 10px 28px 10px 10px; }
   .graph-wrap::-webkit-scrollbar { display: none; }
   .months { display: flex; height: 22px; position: relative; color: var(--dim); }
   .months span { position: absolute; font-family: var(--mono); font-size: 12px; }
   .graph { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 10px); gap: 3px; width: max-content; }
-  .cell { width: 10px; height: 10px; border-radius: 2px; background: var(--cell); }
+  .cell { width: 10px; height: 10px; border-radius: 2px; background: var(--cell); position: relative; }
+  /* Twinkle: a random active cell glows for a moment (only opacity animates) */
+  .cell.on::after {
+    content: ""; position: absolute; inset: 0; border-radius: 2px; opacity: 0;
+    box-shadow: 0 0 6px 1px currentColor, 0 0 14px 2px currentColor;
+  }
+  :root[data-theme="light"] .cell.on::after { box-shadow: 0 0 5px 1px currentColor, 0 0 10px 1px currentColor; }
+  .cell.tw::after { animation: twinkle 2.6s ease-in-out; }
+  .cell.on[style*="--lit"]::after { opacity: .6; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; } 45% { opacity: .9; } }
   .graph-note { margin-top: 18px; color: var(--dim); }
   #contrib[hidden] { display: none; }
 
@@ -544,8 +552,19 @@
   tick(); setInterval(tick, 30000);
 
   // GitHub contribution graph (real data, loaded in the browser)
-  const palette = ['#c084fc', '#f472b6', '#38bdf8', '#fb923c', '#a3e635', '#fcd34d', '#818cf8'];
+  const palettes = {
+    dark:  { colors: ['#c084fc', '#f472b6', '#38bdf8', '#fb923c', '#a3e635', '#fcd34d', '#818cf8'], alpha: [0, .35, .6, .85, 1] },
+    light: { colors: ['#b4532a', '#c98a1b', '#2f7f74', '#4b5fa8', '#8a4f9e', '#6b8a2e', '#c4566e'], alpha: [0, .5, .7, .87, 1] }
+  };
   const hash = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const paintCells = () => {
+    const pal = palettes[document.documentElement.dataset.theme] || palettes.dark;
+    document.querySelectorAll('.cell.on').forEach(cell => {
+      const c = pal.colors[cell.dataset.c];
+      cell.style.background = c; cell.style.color = c; cell.style.opacity = pal.alpha[cell.dataset.l];
+    });
+  };
+  addEventListener('themechange', paintCells);
   fetch('https://github-contributions-api.jogruber.de/v4/aviollaz?y=last')
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(data => {
@@ -561,11 +580,9 @@
         cell.className = 'cell';
         cell.title = `${d.count} contributions · ${d.date}`;
         if (d.level > 0) {
-          const c = palette[hash(d.date) % palette.length];
-          const o = [0, .35, .6, .85, 1][d.level];
-          cell.style.background = c;
-          cell.style.opacity = o;
-          if (d.level >= 2) cell.style.boxShadow = `0 0 ${4 + d.level * 2}px ${c}`;
+          cell.classList.add('on');
+          cell.dataset.c = hash(d.date) % 7;
+          cell.dataset.l = d.level;
         }
         graph.appendChild(cell);
         const dt = new Date(d.date + 'T00:00');
@@ -580,7 +597,24 @@
       });
       const total = data.total && Object.values(data.total)[0];
       document.getElementById('graphNote').textContent = `${total ?? days.reduce((a, d) => a + d.count, 0)} contributions in the last year`;
+      paintCells();
       document.getElementById('contrib').hidden = false;
+      const lit = [...graph.querySelectorAll('.cell.on')];
+      if (lit.length) {
+        const pick = () => lit[Math.floor(Math.random() * lit.length)];
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          // No twinkling: a few random cells keep a soft, steady glow instead
+          for (let k = 0; k < Math.min(6, lit.length); k++) pick().style.setProperty('--lit', '1');
+        } else {
+          setInterval(() => {
+            if (document.hidden) return;
+            const c = pick();
+            if (c.classList.contains('tw')) return;
+            c.classList.add('tw');
+            c.addEventListener('animationend', () => c.classList.remove('tw'), { once: true });
+          }, 260);
+        }
+      }
       const wrap = document.getElementById('graphWrap');
       wrap.scrollLeft = wrap.scrollWidth;
     })
