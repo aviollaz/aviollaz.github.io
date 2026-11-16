@@ -206,6 +206,8 @@
   :root[data-theme="light"] .theme-btn .sun { opacity: 1; transform: none; }
   :root[data-theme="light"] .theme-btn .moon { opacity: 0; transform: rotate(90deg) scale(.5); }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  /* Fallback where View Transitions aren't available: a slower colour fade */
+  :root.theme-fade, :root.theme-fade * { transition: background-color .9s ease, color .9s ease, border-color .9s ease, fill .9s ease !important; }
   .dock svg { width: 21px; height: 21px; fill: currentColor; }
 
 
@@ -268,7 +270,7 @@
       <details>
         <summary><span class="name u">SmartCart</span><span class="meta mono">backend · data</span></summary>
         <div class="detail">
-          <p>A grocery shopping optimizer. Every night it scrapes Coto, Día and Carrefour, matches products with vector search, and a constraint solver splits your cart across the chains to spend as little as possible. While scraping, I found a card skimmer hidden in the catalogs of Jumbo, Disco and Vea; I reported it and it was taken down.</p>
+          <p>A grocery shopping optimizer. Every night it scrapes Coto, Día and Carrefour, matches products with vector search, and a constraint solver splits your cart across the chains to spend as little as possible. While scraping, I found a card skimmer hidden in the catalogs of Jumbo, Disco and Vea; I reported it and it was taken down (featured in Dark News).</p>
           <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · Cloud Run · GitHub Actions</div>
           <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="https://github.com/aviollaz/SmartCart" target="_blank" rel="noopener">code ↗</a><a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener">the skimmer story ↗</a></div>
         </div>
@@ -491,15 +493,45 @@
       sync(); dispatchEvent(new Event('themechange'));
     };
     sync();
+    // Chameleon switch: the new theme grows from the button as a wobbling blob,
+    // and its "skin" cycles through greens and yellows before settling.
+    const DUR = 1400, N = 72, STEPS = 16;
+    const ease = t => 1 - Math.pow(1 - t, 1.7);
+    const blob = (x, y, r, k, seed) => 'polygon(' + Array.from({ length: N }, (_, i) => {
+      const a = i / N * Math.PI * 2;
+      const w = 1 + .16 * Math.sin(3 * a + seed + k * 2.1) + .09 * Math.sin(5 * a - seed * 1.7 - k * 3.3) + .05 * Math.sin(11 * a + seed * 2.3 + k * 5.2);
+      return `${(x + Math.cos(a) * r * w).toFixed(1)}px ${(y + Math.sin(a) * r * w).toFixed(1)}px`;
+    }).join(',') + ')';
+    const skin = (s, h) => `sepia(${s}) saturate(${1 + s * 2.2}) hue-rotate(${h}deg)`;
+    let busy = false;
     btn.addEventListener('click', () => {
+      if (busy) return;
       const t = root.dataset.theme === 'light' ? 'dark' : 'light';
-      if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return apply(t);
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return apply(t);
+      if (!document.startViewTransition) {
+        root.classList.add('theme-fade'); apply(t);
+        return setTimeout(() => root.classList.remove('theme-fade'), 950);
+      }
+      busy = true;
       const r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
-      const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-      document.startViewTransition(() => apply(t)).ready.then(() => {
-        root.animate({ clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
-          { duration: 650, easing: 'cubic-bezier(.65,0,.35,1)', pseudoElement: '::view-transition-new(root)' });
+      const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) / .7;
+      const seed = Math.random() * 6.28;
+      const vt = document.startViewTransition(() => apply(t));
+      vt.ready.then(() => {
+        const opts = { duration: DUR, easing: 'linear', fill: 'both' };
+        root.animate(Array.from({ length: STEPS + 1 }, (_, i) => {
+          const p = i / STEPS;
+          return { clipPath: blob(x, y, end * ease(p), p * 3, seed) };
+        }), { ...opts, pseudoElement: '::view-transition-new(root)' });
+        root.animate([
+          { filter: skin(.7, 135) }, { filter: skin(.6, 85), offset: .35 },
+          { filter: skin(.4, 25), offset: .7 }, { filter: skin(0, 0) }
+        ], { ...opts, pseudoElement: '::view-transition-new(root)' });
+        root.animate([
+          { filter: skin(0, 0) }, { filter: skin(.45, 60), offset: .4 }, { filter: skin(.7, 125) }
+        ], { ...opts, pseudoElement: '::view-transition-old(root)' });
       });
+      vt.finished.finally(() => { busy = false; });
     });
   })();
 
