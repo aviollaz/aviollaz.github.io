@@ -213,14 +213,9 @@
   .theme-btn .sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
   :root[data-theme="light"] .theme-btn .sun { opacity: 1; transform: none; }
   :root[data-theme="light"] .theme-btn .moon { opacity: 0; transform: rotate(90deg) scale(.5); }
-  /* Chameleon switch layers: only transform and opacity animate, so the GPU does all the work */
-  .cham {
-    position: fixed; z-index: 50; width: 120px; height: 120px; margin: -60px 0 0 -60px;
-    pointer-events: none; will-change: transform, opacity; transform: scale(0);
-    border-radius: 42% 58% 63% 37% / 45% 38% 62% 55%;
-  }
-  .cham.veil { inset: 0; width: auto; height: auto; margin: 0; border-radius: 0; transform: none; opacity: 0; }
-  .cham.skin { background: conic-gradient(from 20deg, #2ec4a0, #6fd36b, #c9e45c, #f0b65a, #e98a5a, #2ec4a0); }
+  /* Theme switch: a quick cross-fade between both themes; text stays visible throughout */
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .35s; animation-timing-function: ease-out; }
+  :root.theme-fade, :root.theme-fade * { transition: background-color .35s ease-out, color .35s ease-out, border-color .35s ease-out !important; }
   .dock svg { width: 21px; height: 21px; fill: currentColor; }
 
 
@@ -454,7 +449,7 @@
     resize(); addEventListener('resize', () => { resize(); draw(performance.now()); });
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { draw(0); return; }
     let last = 0;
-    const loop = t => { if (t - last > 50 && !document.hidden && wide.matches && !window.__switching) { draw(t); last = t; } requestAnimationFrame(loop); };
+    const loop = t => { if (t - last > 50 && !document.hidden && wide.matches) { draw(t); last = t; } requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   })();
 
@@ -507,39 +502,12 @@
       sync(); dispatchEvent(new Event('themechange'));
     };
     sync();
-    // Chameleon switch: a swirl of colour grows from the button, the new theme's
-    // colour follows right behind it, the theme flips underneath, and the page
-    // fades back in. Only transform and opacity animate, so it stays smooth on phones.
-    const layer = cls => Object.assign(document.createElement('div'), { className: 'cham ' + cls, ariaHidden: 'true' });
-    let busy = false;
+    // Quick cross-fade: the old and new theme blend for a moment, nothing covers the page.
     btn.addEventListener('click', () => {
-      if (busy) return;
       const t = root.dataset.theme === 'light' ? 'dark' : 'light';
-      const bg = t === 'light' ? '#f2ebdd' : '#000';
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        // No movement: just a soft cross-fade through the new background colour
-        busy = true;
-        const veil = layer('veil'); veil.style.background = bg; document.body.appendChild(veil);
-        veil.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: 'ease-in', fill: 'forwards' }).finished
-          .then(() => { apply(t); return veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 480, easing: 'ease-out', fill: 'forwards' }).finished; })
-          .finally(() => { veil.remove(); busy = false; });
-        return;
-      }
-      busy = true; window.__switching = true;
-      const r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
-      const cover = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) * 2 / 120 / .78;
-      const skin = layer('skin'), fill = layer('fill');
-      fill.style.background = bg;
-      for (const el of [skin, fill]) { el.style.left = x + 'px'; el.style.top = y + 'px'; document.body.appendChild(el); }
-      const grow = (el, delay, turn) => el.animate([
-        { transform: 'scale(0) rotate(0deg)' },
-        { transform: `scale(${cover}) rotate(${turn}deg)` }
-      ], { duration: 720, delay, easing: 'cubic-bezier(.55,0,.25,1)', fill: 'forwards' });
-      grow(skin, 0, 140);
-      grow(fill, 170, 95).finished.then(() => {
-        apply(t); skin.remove();
-        return fill.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: 'ease-out', fill: 'forwards' }).finished;
-      }).finally(() => { skin.remove(); fill.remove(); busy = false; window.__switching = false; });
+      if (document.startViewTransition) return document.startViewTransition(() => apply(t));
+      root.classList.add('theme-fade'); apply(t);
+      setTimeout(() => root.classList.remove('theme-fade'), 400);
     });
   })();
 
