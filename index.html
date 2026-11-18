@@ -64,7 +64,7 @@
     opacity: .45;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45  0 0 0 0 .36  0 0 0 0 .25  0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  :root[data-theme="light"] #bg { opacity: .5; mix-blend-mode: multiply; }
+  :root[data-theme="light"] #bg { opacity: .75; mix-blend-mode: multiply; }
   :root[data-theme="light"] .hatch {
     background: repeating-linear-gradient(-45deg, rgba(180,83,42,.16) 0 1px, transparent 1px 9px);
   }
@@ -83,12 +83,12 @@
   @media (max-width: 840px) { #bg { display: none; } }
   #bg {
     position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -1;
-    image-rendering: pixelated; opacity: .4;
+    image-rendering: pixelated; opacity: .75;
     --fade: linear-gradient(to right,
-      #000 0, #000 calc(50% - 420px - 420px),
-      transparent calc(50% - 420px),
-      transparent calc(50% + 420px),
-      #000 calc(50% + 420px + 420px), #000 100%);
+      #000 0, #000 calc(50% - 390px - 220px),
+      transparent calc(50% - 390px),
+      transparent calc(50% + 390px),
+      #000 calc(50% + 390px + 220px), #000 100%);
     -webkit-mask-image: var(--fade); mask-image: var(--fade);
   }
   .frame {
