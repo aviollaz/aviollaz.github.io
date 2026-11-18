@@ -13,6 +13,9 @@
     if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     document.documentElement.dataset.theme = t;
     if (t === 'light') document.querySelector('meta[name="theme-color"]').content = '#f2ebdd';
+    let l; try { l = localStorage.getItem('lang'); } catch (e) {}
+    if (l !== 'en' && l !== 'es') l = /^es\b/i.test(navigator.language || '') ? 'es' : 'en';
+    document.documentElement.dataset.lang = l; document.documentElement.lang = l;
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,6 +73,7 @@
   }
   :root[data-theme="light"] .intro .accent { font-family: var(--serif); font-style: italic; font-size: 1.12em; line-height: 1; }
   :root[data-theme="light"] footer .live::before { box-shadow: 0 0 0 3px rgba(180,83,42,.15); }
+  :root[data-lang="es"] .en, :root:not([data-lang="es"]) .es { display: none !important; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
@@ -222,6 +226,12 @@
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .35s; animation-timing-function: ease-out; }
   :root.theme-fade, :root.theme-fade * { transition: background-color .35s ease-out, color .35s ease-out, border-color .35s ease-out !important; }
   .dock svg { width: 21px; height: 21px; fill: currentColor; }
+  .lang-btn .code { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; }
+  .hold-tip kbd {
+    font-family: var(--mono); font-size: 11px; margin-left: 6px; padding: 0 4px;
+    border: 1px solid var(--dock-line); border-radius: 4px; color: var(--muted);
+  }
+  @media (hover: none) { .hold-tip kbd { display: none; } }
 
 
   /* Hold-to-download */
@@ -250,7 +260,7 @@
     background: var(--tip-bg); border: 1px solid var(--dock-line); border-radius: 8px; padding: 5px 10px;
     opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
   }
-  .hold:hover .hold-tip, .hold.holding .hold-tip, .hold.done .hold-tip, .theme-btn:hover .hold-tip, .theme-btn:focus-visible .hold-tip { opacity: 1; transform: translate(-50%, 0); }
+  .hold:hover .hold-tip, .hold.holding .hold-tip, .hold.done .hold-tip, .theme-btn:hover .hold-tip, .theme-btn:focus-visible .hold-tip, .lang-btn:hover .hold-tip, .lang-btn:focus-visible .hold-tip { opacity: 1; transform: translate(-50%, 0); }
   @media (prefers-reduced-motion: no-preference) {
     .fade { animation: fade .7s ease both; }
     .fade:nth-of-type(2) { animation-delay: .08s; }
@@ -266,30 +276,36 @@
   <section class="fade">
     <div class="avatar"><img src="https://github.com/aviollaz.png?size=160" alt="" width="64" height="64"></div>
     <h1>André Viollaz</h1>
-    <p class="lede">Computer Science student at the University of Buenos Aires. I build data and security tools, and some of them end up running in production.</p>
+    <p class="lede en">Computer Science student at the University of Buenos Aires. I build data and security tools, and some of them end up running in production.</p>
+    <p class="lede es">Estudiante de Ciencias de la Computación en la Universidad de Buenos Aires. Construyo herramientas de datos y seguridad, y algunas terminan corriendo en producción.</p>
     <ul class="highlights">
-      <li><strong>Found a card skimmer</strong> injected into the Jumbo, Disco and Vea online stores while building a price optimizer. I reported it and it was taken down. <a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener">Read the story ↗</a></li>
-      <li><strong>Automated review replies for IRSA</strong> shopping malls, saving an estimated 10 hours of staff time a month at Patio Bullrich alone.</li>
-      <li><strong>Wrote a 32-bit x86 kernel</strong> from scratch, with paging, system calls and a preemptive scheduler.</li>
+      <li class="en"><strong>Found a card skimmer</strong> injected into the Jumbo, Disco and Vea online stores while building a price optimizer. I reported it and it was taken down. <a class="u" href="writing/skimmer.html">Read the story →</a></li>
+      <li class="es"><strong>Encontré un skimmer de tarjetas</strong> inyectado en las tiendas online de Jumbo, Disco y Vea mientras armaba un optimizador de precios. Lo reporté y lo quitaron. <a class="u" href="writing/skimmer.html">Leer la historia →</a></li>
+      <li class="en"><strong>Scanned 318,000+ products</strong> across 35 Argentine online stores for injected code, and reported a stored XSS on a bank-owned marketplace.</li>
+      <li class="es"><strong>Escaneé más de 318.000 productos</strong> de 35 tiendas online argentinas en busca de código inyectado, y reporté un XSS almacenado en el marketplace de un banco.</li>
+      <li class="en"><strong>Automated review replies for IRSA</strong> shopping malls, saving an estimated 10 hours of staff time a month at Patio Bullrich alone.</li>
+      <li class="es"><strong>Automaticé las respuestas a reseñas de IRSA</strong> en sus shoppings: unas 10 horas de trabajo ahorradas por mes solo en Patio Bullrich.</li>
     </ul>
   </section>
 
   <div class="hatch"></div>
 
   <section>
-    <h2>Work</h2>
+    <h2><span class="en">Work</span><span class="es">Experiencia</span></h2>
     <div class="entries">
 
       <div class="entry">
-        <div class="entry-head"><span class="name">Outlier</span><span class="meta mono">current</span></div>
-        <div class="role">AI Evaluator &amp; QA</div>
-        <p>Evaluating and stress-testing responses from large language models.</p>
+        <div class="entry-head"><span class="name">Outlier</span><span class="meta mono"><span class="en">May 2026 – now</span><span class="es">may 2026 – hoy</span></span></div>
+        <div class="role"><span class="en">AI Evaluator &amp; QA</span><span class="es">Evaluador de IA y QA</span></div>
+        <p class="en">Training AI models by writing, evaluating and improving prompts and responses, validating other evaluators' work through peer review, and building Docker environments for reproducible model testing.</p>
+        <p class="es">Entreno modelos de IA escribiendo, evaluando y mejorando prompts y respuestas, valido el trabajo de otros evaluadores con revisiones de pares y armo entornos Docker para pruebas reproducibles.</p>
       </div>
 
       <div class="entry">
-        <div class="entry-head"><span class="name">IRSA</span><span class="meta mono">automation</span></div>
-        <div class="role">Google Maps review automation</div>
-        <p>Replies to Google Maps reviews following the brand's guidelines, in use across IRSA shopping malls. At Patio Bullrich alone it handles <strong>about 50 reviews a week</strong>, an estimated <strong>10 hours of staff time saved per month</strong>.</p>
+        <div class="entry-head"><span class="name">IRSA</span><span class="meta mono"><span class="en">Dec 2025 – May 2026</span><span class="es">dic 2025 – may 2026</span></span></div>
+        <div class="role"><span class="en">Freelance automation developer</span><span class="es">Desarrollador de automatizaciones freelance</span></div>
+        <p class="en">Built an automation that replies to Google Maps reviews following the brand's guidelines, in use across IRSA shopping malls. At Patio Bullrich alone it handles <strong>about 50 reviews a week</strong>, an estimated <strong>10 hours of staff time saved per month</strong>.</p>
+        <p class="es">Armé una automatización que responde reseñas de Google Maps siguiendo los lineamientos de la marca, en uso en los shoppings de IRSA. Solo en Patio Bullrich maneja <strong>unas 50 reseñas por semana</strong>, unas <strong>10 horas de trabajo ahorradas por mes</strong>.</p>
         <div class="stack">Make · LLMs · Google Maps</div>
       </div>
 
@@ -299,42 +315,47 @@
   <div class="hatch"></div>
 
   <section>
-    <h2>Projects</h2>
+    <h2><span class="en">Projects</span><span class="es">Proyectos</span></h2>
     <div class="entries">
 
       <div class="entry">
         <div class="entry-head"><span class="name">SmartCart</span><span class="meta mono">backend · data</span></div>
-        <p>Splits your grocery cart across Coto, Día and Carrefour to spend as little as possible. It scrapes the three chains every night, matches products with vector search and solves the split with a constraint solver. While scraping, I found the skimmer described above.</p>
+        <p class="en">Splits your grocery cart across Coto, Día, Carrefour and Vea to spend as little as possible. It scrapes the chains every night, matches products with vector search and solves the split with a constraint solver. While scraping, I found the skimmer described above.</p>
+        <p class="es">Reparte tu carrito de supermercado entre Coto, Día, Carrefour y Vea para gastar lo menos posible. Scrapea las cadenas todas las noches, empareja productos con búsqueda vectorial y resuelve la división con un solver de restricciones. Mientras scrapeaba encontré el skimmer de arriba.</p>
         <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · Cloud Run · GitHub Actions</div>
-        <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener">the skimmer story ↗</a></div>
+        <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="writing/skimmer.html"><span class="en">the skimmer story</span><span class="es">la historia del skimmer</span> →</a><a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener"><span class="en">press</span><span class="es">prensa</span>: Dark News ↗</a></div>
       </div>
 
       <div class="entry">
         <div class="entry-head"><span class="name">skimwatch</span><span class="meta mono">security</span></div>
-        <p>Detects code injected into online store catalogs. I built it after the skimmer finding and used it to <strong>survey 35 Argentine stores</strong> running on VTEX.</p>
+        <p class="en">Scans online store catalogs for injected code. I built it after the skimmer finding and ran it over <strong>318,000+ products in 35 Argentine stores</strong>. It turned up a stored XSS in a product listing on a bank-owned marketplace, which I reported to the bank.</p>
+        <p class="es">Busca código inyectado en los catálogos de tiendas online. Lo construí después del hallazgo del skimmer y lo corrí sobre <strong>más de 318.000 productos de 35 tiendas argentinas</strong>. Encontró un XSS almacenado en un producto del marketplace de un banco, que le reporté al banco.</p>
         <div class="stack">Go · PostgreSQL · GitHub Actions</div>
-        <div class="links"><a class="u" href="https://github.com/aviollaz/skimwatch" target="_blank" rel="noopener">code ↗</a></div>
+        <div class="links"><a class="u" href="https://github.com/aviollaz/skimwatch" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
       </div>
 
       <div class="entry">
         <div class="entry-head"><span class="name">Kernel x86</span><span class="meta mono">systems</span></div>
-        <p>A 32-bit kernel from scratch: protected mode, interrupts, per-task paging, system calls and a preemptive scheduler running four tasks.</p>
+        <p class="en">A 32-bit kernel from scratch: protected mode, interrupts, per-task paging, system calls and a preemptive scheduler running four tasks.</p>
+        <p class="es">Un kernel de 32 bits desde cero: modo protegido, interrupciones, paginación por tarea, llamadas al sistema y un scheduler preemptivo que corre cuatro tareas.</p>
         <div class="stack">C · x86 Assembly</div>
-        <div class="links"><a class="u" href="https://github.com/aviollaz/miniOS" target="_blank" rel="noopener">code ↗</a></div>
+        <div class="links"><a class="u" href="https://github.com/aviollaz/miniOS" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
       </div>
 
       <div class="entry">
         <div class="entry-head"><span class="name">Credit Scoring</span><span class="meta mono">ml</span></div>
-        <p>Predicts loan default on Kaggle's Home Credit data, end to end from cleaning and feature engineering to an XGBoost model in a Streamlit dashboard. It <strong>catches 66% of defaulters</strong> on a 61,503-application hold-out set.</p>
+        <p class="en">Predicts loan default on Kaggle's Home Credit data, end to end from cleaning and feature engineering to an XGBoost model in a Streamlit dashboard. It <strong>catches 66% of defaulters</strong> on a 61,503-application hold-out set.</p>
+        <p class="es">Predice el incumplimiento de préstamos con los datos de Home Credit de Kaggle, de punta a punta: limpieza, feature engineering y un modelo XGBoost en un dashboard de Streamlit. <strong>Detecta el 66% de los morosos</strong> en un conjunto de prueba de 61.503 solicitudes.</p>
         <div class="stack">Python · XGBoost · pandas · scikit-learn · Streamlit</div>
         <div class="links"><a class="u" href="https://credit-score-assessment.streamlit.app/" target="_blank" rel="noopener">live demo ↗</a></div>
       </div>
 
       <div class="entry">
         <div class="entry-head"><span class="name">Catering DB</span><span class="meta mono">databases</span></div>
-        <p>A management app for catering companies (orders, recipes, stock and purchasing), built as a team for my Databases course on the class's schema-driven framework.</p>
+        <p class="en">A management app for catering companies (orders, recipes, stock and purchasing), built as a team for my Databases course on the class's schema-driven framework.</p>
+        <p class="es">Una app de gestión para empresas de catering (pedidos, recetas, stock y compras), hecha en equipo para la materia Bases de Datos sobre el framework de la cátedra.</p>
         <div class="stack">TypeScript · Node.js · Express · PostgreSQL · Docker</div>
-        <div class="links"><a class="u" href="https://github.com/aviollaz/ssot2026-catering" target="_blank" rel="noopener">code ↗</a></div>
+        <div class="links"><a class="u" href="https://github.com/aviollaz/ssot2026-catering" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
       </div>
 
     </div>
@@ -344,16 +365,16 @@
 
   <section>
     <h2>Open source</h2>
-    <!-- To link a PR: <a class="name u" href="PR_URL" target="_blank" rel="noopener">Title<span class="arrow">↗</span></a> and put "#NUMBER · " in the meta -->
-    <div class="row"><a class="name u" href="https://github.com/ppy/osu/pull/36027" target="_blank" rel="noopener">osu!: fix music speed in the quick play queue<span class="arrow">↗</span></a><span class="meta mono">#36027</span></div>
-    <div class="row"><a class="name u" href="https://github.com/ari-dc-uba-ar/ssot2026/pull/33" target="_blank" rel="noopener">UBA course framework: foreign/primary key validation<span class="arrow">↗</span></a><span class="meta mono">#33</span></div>
-    <div class="row"><a class="name u" href="https://github.com/ari-dc-uba-ar/ssot2026/pull/34" target="_blank" rel="noopener">UBA course framework: test suite refactor<span class="arrow">↗</span></a><span class="meta mono">#34</span></div>
+    <!-- To link a PR: <a class="name u" href="PR_URL" target="_blank" rel="noopener">Title<span class="arrow">↗</span></a> and put "#NUMBER" in the meta -->
+    <div class="row"><a class="name u" href="https://github.com/ppy/osu/pull/36027" target="_blank" rel="noopener"><span class="en">osu!: fix music speed in the quick play queue</span><span class="es">osu!: arreglo de la velocidad de la música en la cola de quick play</span><span class="arrow">↗</span></a><span class="meta mono">#36027</span></div>
+    <div class="row"><a class="name u" href="https://github.com/ari-dc-uba-ar/ssot2026/pull/33" target="_blank" rel="noopener"><span class="en">UBA course framework: foreign/primary key validation</span><span class="es">Framework de la cátedra (UBA): validación de claves foráneas y primarias</span><span class="arrow">↗</span></a><span class="meta mono">#33</span></div>
+    <div class="row"><a class="name u" href="https://github.com/ari-dc-uba-ar/ssot2026/pull/34" target="_blank" rel="noopener"><span class="en">UBA course framework: test suite refactor</span><span class="es">Framework de la cátedra (UBA): refactor de la suite de tests</span><span class="arrow">↗</span></a><span class="meta mono">#34</span></div>
   </section>
 
   <div id="contrib" hidden>
     <div class="hatch"></div>
     <section>
-      <h2>A little, often.</h2>
+      <h2><span class="en">A little, often.</span><span class="es">Un poco, seguido.</span></h2>
       <div class="graph-wrap" id="graphWrap">
         <div class="months" id="months"></div>
         <div class="graph" id="graph"></div>
@@ -368,7 +389,7 @@
     <div class="foot-left">
       <span class="live" id="clock">Buenos Aires</span>
     </div>
-    <div class="foot-right"><span>© 2026 André Viollaz</span><a href="#">Top ↑</a></div>
+    <div class="foot-right"><span>© 2026 André Viollaz</span><a href="#"><span class="en">Top</span><span class="es">Arriba</span> ↑</a></div>
   </footer>
 
   <div class="hatch"></div>
@@ -391,10 +412,14 @@
     <span class="hold-tip mono" id="cvTip">Hold to download</span>
   </a>
   <span class="sep" aria-hidden="true"></span>
-  <button type="button" class="theme-btn" id="themeBtn" aria-label="Switch to light mode">
+  <button type="button" class="lang-btn" id="langBtn" aria-label="Cambiar a español" aria-keyshortcuts="L">
+    <span class="code" id="langCode">ES</span>
+    <span class="hold-tip mono"><span id="langTip">Español</span><kbd>L</kbd></span>
+  </button>
+  <button type="button" class="theme-btn" id="themeBtn" aria-label="Switch to light mode" aria-keyshortcuts="T">
     <svg class="moon" viewBox="0 0 24 24"><path d="M12.3 3a8.6 8.6 0 108.7 11.2A7 7 0 0112.3 3z"/></svg>
     <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M11 1.5h2v3h-2zM11 19.5h2v3h-2zM1.5 11h3v2h-3zM19.5 11h3v2h-3zM4.2 5.6l1.4-1.4 2.1 2.1-1.4 1.4zM16.3 17.7l1.4-1.4 2.1 2.1-1.4 1.4zM4.2 18.4l2.1-2.1 1.4 1.4-2.1 2.1zM16.3 6.3l2.1-2.1 1.4 1.4-2.1 2.1z"/></svg>
-    <span class="hold-tip mono" id="themeTip">Light mode</span>
+    <span class="hold-tip mono"><span id="themeTip">Light mode</span><kbd>T</kbd></span>
   </button>
 </nav>
 
@@ -409,7 +434,7 @@
       light: { pal: [[250,246,238],[244,232,212],[236,212,182],[226,184,150],[206,146,112],[150,160,124]], spark: [46,70,110] }
     };
     let { pal, spark } = themes[document.documentElement.dataset.theme] || themes.dark;
-    const wide = matchMedia('(min-width: 761px)');
+    const wide = matchMedia('(min-width: 841px)');
     addEventListener('themechange', () => { ({ pal, spark } = themes[document.documentElement.dataset.theme]); if (wide.matches) draw(performance.now()); });
     const bayer = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5].map(v => v / 16 - .5);
     const hash = (x, y) => { let h = x * 374761393 + y * 668265263; h = (h ^ (h >>> 13)) * 1274126177; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
@@ -463,6 +488,16 @@
 
 
 
+  // Strings set from JS, per language
+  const STR = {
+    en: { hold: 'Hold to download', keep: 'Keep holding…', dl: 'Downloading', light: 'Light mode', dark: 'Dark mode',
+          toTheme: m => `Switch to ${m} mode`, contribs: n => `${n} contributions in the last year`, cell: (n, d) => `${n} contributions · ${d}` },
+    es: { hold: 'Mantené para descargar', keep: 'Seguí manteniendo…', dl: 'Descargando', light: 'Modo claro', dark: 'Modo oscuro',
+          toTheme: m => m === 'light' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro', contribs: n => `${n} contribuciones en el último año`, cell: (n, d) => `${n} contribuciones · ${d}` }
+  };
+  const lang = () => document.documentElement.dataset.lang === 'es' ? 'es' : 'en';
+  const S = () => STR[lang()];
+
   // Hold-to-download CV
   (() => {
     const btn = document.getElementById('cvBtn'), tip = document.getElementById('cvTip');
@@ -471,19 +506,19 @@
       if (e.type === 'keydown' && (e.repeat || (e.key !== 'Enter' && e.key !== ' '))) return;
       e.preventDefault(); if (timer) return;
       clearTimeout(resetT); btn.classList.remove('done'); btn.classList.add('holding');
-      tip.textContent = 'Keep holding…';
+      tip.textContent = S().keep;
       timer = setTimeout(() => {
         timer = null; btn.classList.remove('holding'); btn.classList.add('done');
-        tip.textContent = 'Downloading';
+        tip.textContent = S().dl;
         const a = document.createElement('a'); a.href = btn.getAttribute('href'); a.download = 'Andre_Viollaz_CV.pdf';
         document.body.appendChild(a); a.click(); a.remove();
         if (navigator.vibrate) navigator.vibrate(30);
-        resetT = setTimeout(() => { btn.classList.remove('done'); tip.textContent = 'Hold to download'; }, 1800);
+        resetT = setTimeout(() => { btn.classList.remove('done'); tip.textContent = S().hold; }, 1800);
       }, HOLD);
     };
     const cancel = () => {
       if (!timer) return; clearTimeout(timer); timer = null;
-      btn.classList.remove('holding'); tip.textContent = 'Hold to download';
+      btn.classList.remove('holding'); tip.textContent = S().hold;
     };
     btn.addEventListener('click', e => e.preventDefault());
     btn.addEventListener('contextmenu', e => e.preventDefault());
@@ -492,6 +527,8 @@
     btn.addEventListener('keydown', start);
     btn.addEventListener('keyup', cancel);
     btn.addEventListener('blur', cancel);
+    const sync = () => { if (!btn.classList.contains('holding') && !btn.classList.contains('done')) tip.textContent = S().hold; };
+    sync(); addEventListener('langchange', sync);
   })();
 
   // Theme toggle
@@ -500,8 +537,8 @@
     const root = document.documentElement, meta = document.querySelector('meta[name="theme-color"]');
     const sync = () => {
       const next = root.dataset.theme === 'light' ? 'dark' : 'light';
-      btn.setAttribute('aria-label', `Switch to ${next} mode`);
-      tip.textContent = next === 'light' ? 'Light mode' : 'Dark mode';
+      btn.setAttribute('aria-label', S().toTheme(next));
+      tip.textContent = next === 'light' ? S().light : S().dark;
       meta.content = root.dataset.theme === 'light' ? '#f2ebdd' : '#000000';
     };
     const apply = t => {
@@ -509,13 +546,41 @@
       try { localStorage.setItem('theme', t); } catch (e) {}
       sync(); dispatchEvent(new Event('themechange'));
     };
-    sync();
+    sync(); addEventListener('langchange', sync);
     // Quick cross-fade: the old and new theme blend for a moment, nothing covers the page.
-    btn.addEventListener('click', () => {
+    const toggle = () => {
       const t = root.dataset.theme === 'light' ? 'dark' : 'light';
       if (document.startViewTransition) return document.startViewTransition(() => apply(t));
       root.classList.add('theme-fade'); apply(t);
       setTimeout(() => root.classList.remove('theme-fade'), 400);
+    };
+    btn.addEventListener('click', toggle);
+    addEventListener('keydown', e => {
+      if (e.key.toLowerCase() !== 't' || e.ctrlKey || e.metaKey || e.altKey || e.repeat || e.target.closest('input, textarea, [contenteditable]')) return;
+      toggle();
+    });
+  })();
+
+  // Language toggle (EN / ES), also on the L key
+  (() => {
+    const btn = document.getElementById('langBtn'), root = document.documentElement;
+    const sync = () => {
+      const es = lang() === 'es';
+      document.getElementById('langCode').textContent = es ? 'EN' : 'ES';
+      document.getElementById('langTip').textContent = es ? 'English' : 'Español';
+      btn.setAttribute('aria-label', es ? 'Switch to English' : 'Cambiar a español');
+    };
+    const toggle = () => {
+      const l = lang() === 'es' ? 'en' : 'es';
+      root.dataset.lang = l; root.lang = l;
+      try { localStorage.setItem('lang', l); } catch (e) {}
+      sync(); dispatchEvent(new Event('langchange'));
+    };
+    sync();
+    btn.addEventListener('click', toggle);
+    addEventListener('keydown', e => {
+      if (e.key.toLowerCase() !== 'l' || e.ctrlKey || e.metaKey || e.altKey || e.repeat || e.target.closest('input, textarea, [contenteditable]')) return;
+      toggle();
     });
   })();
 
@@ -554,7 +619,7 @@
       days.forEach((d, i) => {
         const cell = document.createElement('div');
         cell.className = 'cell';
-        cell.title = `${d.count} contributions · ${d.date}`;
+        cell.dataset.n = d.count; cell.dataset.d = d.date;
         if (d.level > 0) {
           cell.classList.add('on');
           cell.dataset.c = hash(d.date) % 7;
@@ -566,13 +631,19 @@
           lastMonth = dt.getMonth();
           const col = Math.floor((i + pad) / 7);
           const m = document.createElement('span');
-          m.textContent = dt.toLocaleDateString('en-US', { month: 'short' });
+          m.dataset.d = d.date;
           m.style.left = (col * 13) + 'px';
           months.appendChild(m);
         }
       });
-      const total = data.total && Object.values(data.total)[0];
-      document.getElementById('graphNote').textContent = `${total ?? days.reduce((a, d) => a + d.count, 0)} contributions in the last year`;
+      const total = (data.total && Object.values(data.total)[0]) ?? days.reduce((a, d) => a + d.count, 0);
+      const label = () => {
+        const loc = lang() === 'es' ? 'es-AR' : 'en-US';
+        months.querySelectorAll('span').forEach(m => { m.textContent = new Date(m.dataset.d + 'T00:00').toLocaleDateString(loc, { month: 'short' }).replace('.', ''); });
+        graph.querySelectorAll('.cell[data-d]').forEach(c => { c.title = S().cell(c.dataset.n, c.dataset.d); });
+        document.getElementById('graphNote').textContent = S().contribs(total);
+      };
+      label(); addEventListener('langchange', label);
       paintCells();
       document.getElementById('contrib').hidden = false;
       const lit = [...graph.querySelectorAll('.cell.on')];
