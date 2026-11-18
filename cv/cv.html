@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- Source for Andre_Viollaz_CV.pdf. Rebuild the PDF with: node cv/build.js -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>André Viollaz · CV</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Liberation Sans", Arial, Helvetica, sans-serif; font-size: 9pt; line-height: 1.25; color: #111; padding: 10mm 14mm 6mm; }
+  a { color: inherit; text-decoration: none; }
+  h1 { font-size: 21pt; line-height: 1.1; }
+  .contact { margin-top: 3pt; font-size: 8.8pt; }
+  h2 { font-size: 10.6pt; letter-spacing: .06em; text-transform: uppercase; border-bottom: .8pt solid #111; padding-bottom: 1.5pt; margin: 7pt 0 3.5pt; }
+  .item { margin-bottom: 3pt; }
+  .row { display: flex; justify-content: space-between; gap: 12pt; }
+  .row b { font-weight: 700; }
+  .sub { font-style: italic; }
+  ul { margin: 1.5pt 0 0 13pt; }
+  li { margin-bottom: .5pt; }
+  .skills p { margin-bottom: 1pt; }
+</style>
+</head>
+<body>
+  <h1>André Viollaz</h1>
+  <div class="contact">Buenos Aires, Argentina | fviollaz@dc.uba.ar | linkedin.com/in/andre-viollaz | github.com/aviollaz | aviollaz.github.io</div>
+
+  <h2>Summary</h2>
+  <p>Computer Science student at UBA building backend, data and security tools. Found and reported a card skimmer in Jumbo, Disco and Vea's online stores. Experience with FastAPI services, data pipelines, automation and LLM evaluation.</p>
+
+  <h2>Experience</h2>
+  <div class="item">
+    <div class="row"><b>AI Evaluator &amp; QA</b><b>May 2026 – Present</b></div>
+    <div class="row sub"><span>Outlier AI</span><span>Remote</span></div>
+    <ul>
+      <li>Write prompts that state-of-the-art language models fail on, plus corrected reference responses used to train them.</li>
+      <li>Review other evaluators' submissions for accuracy and guideline compliance; build Docker environments for reproducible model testing.</li>
+    </ul>
+  </div>
+  <div class="item">
+    <div class="row"><b>Freelance Automation Developer</b><b>Dec 2025 – May 2026</b></div>
+    <div class="row sub"><span>Client: IRSA (shopping centers)</span><span>Remote</span></div>
+    <ul>
+      <li>Built a Make + LLM automation that replies to Google Maps reviews following brand guidelines, in use across IRSA shopping centers. At Patio Bullrich alone it handles ~50 reviews a week, saving ~10 staff hours a month.</li>
+    </ul>
+  </div>
+
+  <h2>Security Research</h2>
+  <div class="item">
+    <div class="row"><b>Card skimmer in Cencosud Argentina's online stores</b><b>Oct 2026</b></div>
+    <ul>
+      <li>Found obfuscated card-skimming JavaScript in product descriptions across Jumbo, Disco and Vea while scraping prices for SmartCart.</li>
+      <li>Reported it to Cencosud and the national cybersecurity unit and re-scanned to verify the cleanup until it was removed. Covered by Dark News.</li>
+    </ul>
+  </div>
+  <div class="item">
+    <div class="row"><b>Skimwatch – Injected-code scanner</b><b>Go, PostgreSQL, GitHub Actions</b></div>
+    <ul>
+      <li>Wrote a Go crawler that flags code injected into store catalogs; passively scanned 318,000+ products across 35 Argentine VTEX stores.</li>
+      <li>Found and reported a stored XSS on a bank-owned marketplace (Nov 2026); every store scanned renders description HTML unfiltered and almost none send a CSP.</li>
+    </ul>
+  </div>
+
+  <h2>Projects</h2>
+  <div class="item">
+    <div class="row"><b>SmartCart – Grocery Cart Optimizer</b><b>Python, FastAPI, PostgreSQL, OR-Tools, React</b></div>
+    <ul>
+      <li>Splits a grocery cart across Coto, Día, Carrefour and Vea to minimize cost; a CP-SAT model handles promotions, bank discounts, delivery costs and minimum purchases.</li>
+      <li>Nightly scrapers on GitHub Actions; barcode and pgvector product matching; FastAPI on Cloud Run, React on Vercel; 540+ tests. Live at smart-cart-rouge.vercel.app.</li>
+    </ul>
+  </div>
+  <div class="item">
+    <div class="row"><b>x86 Operating System Kernel</b><b>C, x86 Assembly</b></div>
+    <ul>
+      <li>32-bit kernel with protected mode, interrupt handling, per-task paging with on-demand page faults, system calls and a preemptive scheduler running four tasks.</li>
+    </ul>
+  </div>
+  <div class="item">
+    <div class="row"><b>Credit Scoring Pipeline</b><b>Python, XGBoost, Streamlit</b></div>
+    <ul>
+      <li>XGBoost default predictor on Kaggle's Home Credit data (307k applications); catches 66% of defaulters on a 61,503-application hold-out set. Served in a Streamlit dashboard.</li>
+    </ul>
+  </div>
+  <div class="item">
+    <div class="row"><b>Catering Management App – UBA</b><b>TypeScript, Node.js, PostgreSQL</b></div>
+    <ul>
+      <li>Databases course team project on the course's schema-driven framework; also contributed FK/PK validation and a test suite refactor to the framework itself (both merged).</li>
+    </ul>
+  </div>
+
+  <h2>Open Source</h2>
+  <div class="item">
+    <div class="row"><b>osu! (ppy/osu) – PR #36027, merged</b><b>C#</b></div>
+    <ul>
+      <li>Fixed background music speed in the quick play queue being affected by mods selected in song select.</li>
+    </ul>
+  </div>
+
+  <h2>Education</h2>
+  <div class="item">
+    <div class="row"><b>B.Sc. in Computer Science</b><b>2022 – 2027 (expected)</b></div>
+    <div class="row sub"><span>Universidad de Buenos Aires</span><span>Buenos Aires, Argentina</span></div>
+    <ul><li>Intermediate degree completed; ~70% of the program completed.</li></ul>
+  </div>
+  <div class="item">
+    <div class="row"><span><b>Data Science Program (8 months)</b> · <i>Digital House</i></span><b>2021</b></div>
+  </div>
+
+  <h2>Skills</h2>
+  <div class="skills">
+    <p><b>Programming:</b> Python, Go, C, x86 Assembly, SQL, TypeScript, Bash</p>
+    <p><b>Backend &amp; Data:</b> FastAPI, PostgreSQL, pgvector, pandas, NumPy, XGBoost, OR-Tools, Power BI</p>
+    <p><b>Security:</b> web/client-side security (XSS, injected scripts, CSP), responsible disclosure; UBA ECI course on exploiting and securing internet communication (TCP/UDP, TLS, Wi-Fi)</p>
+    <p><b>Tools &amp; AI:</b> Git, Docker, Linux, GitHub Actions, Google Cloud Platform, Make; LLM evaluation, prompt design, RAG, Ollama</p>
+    <p><b>Languages:</b> Spanish (native), English (C2)</p>
+  </div>
+</body>
+</html>
