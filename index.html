@@ -159,6 +159,9 @@
   .stack { margin-top: 10px; color: var(--dim); font-family: var(--mono); font-size: 12.5px; }
   .links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 14px; }
   .links a { white-space: nowrap; }
+  .all { padding-top: 20px; border-top: 1px dashed var(--line); font-size: 14px; }
+  .back { display: inline-block; margin-bottom: 28px; color: var(--dim); font-size: 13px; }
+  .back:hover { color: var(--text); }
 
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 6px 0; }
   .row .meta { color: var(--dim); white-space: nowrap; }
@@ -350,23 +353,8 @@
         <div class="links"><a class="u" href="https://github.com/aviollaz/miniOS" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
       </div>
 
-      <div class="entry">
-        <div class="entry-head"><span class="name">Credit Scoring</span><span class="meta mono">ml</span></div>
-        <p class="en">Predicts loan default on Kaggle's Home Credit data, end to end from cleaning and feature engineering to an XGBoost model in a Streamlit dashboard. It <strong>catches 66% of defaulters</strong> on a 61,503-application hold-out set.</p>
-        <p class="es">Predice el incumplimiento de préstamos con los datos de Home Credit de Kaggle, de punta a punta: limpieza, feature engineering y un modelo XGBoost en un dashboard de Streamlit. <strong>Detecta el 66% de los morosos</strong> en un conjunto de prueba de 61.503 solicitudes.</p>
-        <div class="stack">Python · XGBoost · pandas · scikit-learn · Streamlit</div>
-        <div class="links"><a class="u" href="https://credit-score-assessment.streamlit.app/" target="_blank" rel="noopener">live demo ↗</a></div>
-      </div>
-
-      <div class="entry">
-        <div class="entry-head"><span class="name">Catering DB</span><span class="meta mono">databases</span></div>
-        <p class="en">A management app for catering companies (orders, recipes, stock and purchasing), built as a team for my Databases course on the class's schema-driven framework.</p>
-        <p class="es">Una app de gestión para empresas de catering (pedidos, recetas, stock y compras), hecha en equipo para la materia Bases de Datos sobre el framework de la cátedra.</p>
-        <div class="stack">TypeScript · Node.js · Express · PostgreSQL · Docker</div>
-        <div class="links"><a class="u" href="https://github.com/aviollaz/ssot2026-catering" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
-      </div>
-
     </div>
+    <div class="all"><a class="u" href="projects.html"><span class="en">All projects</span><span class="es">Todos los proyectos</span> →</a></div>
   </section>
 
   <div class="hatch"></div>
