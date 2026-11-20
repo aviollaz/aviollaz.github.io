@@ -293,7 +293,7 @@
         <p class="en">Splits your grocery cart across Coto, Día, Carrefour and Vea to spend as little as possible. It scrapes the chains every night, matches products with vector search and solves the split with a constraint solver. While scraping, I found a card skimmer injected into three of those stores.</p>
         <p class="es">Reparte tu carrito de supermercado entre Coto, Día, Carrefour y Vea para gastar lo menos posible. Scrapea las cadenas todas las noches, empareja productos con búsqueda vectorial y resuelve la división con un solver de restricciones. Mientras scrapeaba encontré un skimmer de tarjetas inyectado en tres de esas tiendas.</p>
         <div class="stack">Python · FastAPI · PostgreSQL/pgvector · OR-Tools · React · Cloud Run · GitHub Actions</div>
-        <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="writing/skimmer.html"><span class="en">the skimmer story</span><span class="es">la historia del skimmer</span> →</a><a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener"><span class="en">press</span><span class="es">prensa</span>: Dark News ↗</a></div>
+        <div class="links"><a class="u" href="https://smart-cart-rouge.vercel.app" target="_blank" rel="noopener">live demo ↗</a><a class="u" href="writing/skimmer.html"><span class="en">the skimmer story</span><span class="es">la historia del skimmer</span> →</a><a class="u" href="https://www.brodersendarknews.com/p/disco-jumbo-y-vea-un-estudiante-de" target="_blank" rel="noopener"><span class="en">press</span><span class="es">prensa</span>: Dark News ↗</a><a class="u" href="https://github.com/aviollaz/SmartCart-Performance-Analyzer" target="_blank" rel="noopener"><span class="en">analytics service</span><span class="es">servicio de analítica</span> ↗</a></div>
       </div>
 
       <div class="entry">
@@ -321,11 +321,27 @@
       </div>
 
       <div class="entry">
+        <div class="entry-head"><span class="name">Job digest</span><span class="meta mono">automation · llm</span></div>
+        <p class="en">Every weekday at 8 a.m. a GitHub Actions job pulls fresh postings from LinkedIn, Indeed, GetOnBoard and company career pages, filters them and scores each one from 0 to 10 against a person's profile with Claude Haiku. For the best matches it writes a one-page CV tailored to the posting, using only facts from the profile, and emails a digest. Personal data never touches the public repo: it travels as GitHub secrets. It has screened <strong>about 870 postings</strong> for 2 people so far.</p>
+        <p class="es">Cada día hábil a las 8 de la mañana, un job de GitHub Actions trae ofertas nuevas de LinkedIn, Indeed, GetOnBoard y portales de empresas, las filtra y puntúa cada una del 0 al 10 contra el perfil de una persona con Claude Haiku. Para las que mejor encajan arma un CV de una página adaptado a la oferta, solo con datos del perfil, y manda un resumen por mail. Los datos personales nunca tocan el repo público: viajan como secrets de GitHub. Ya filtró <strong>unas 870 ofertas</strong> para 2 personas.</p>
+        <div class="stack">Python · GitHub Actions · Claude (Haiku, Sonnet) · JobSpy · Jinja2 · headless Chrome</div>
+        <div class="links"><a class="u" href="https://github.com/aviollaz/job-digest" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
+      </div>
+
+      <div class="entry">
         <div class="entry-head"><span class="name">Credit Scoring</span><span class="meta mono">ml</span></div>
         <p class="en">Predicts loan default on Kaggle's Home Credit data, end to end from cleaning and feature engineering to an XGBoost model in a Streamlit dashboard. It <strong>catches 66% of defaulters</strong> on a 61,503-application hold-out set.</p>
         <p class="es">Predice el incumplimiento de préstamos con los datos de Home Credit de Kaggle, de punta a punta: limpieza, feature engineering y un modelo XGBoost en un dashboard de Streamlit. <strong>Detecta el 66% de los morosos</strong> en un conjunto de prueba de 61.503 solicitudes.</p>
         <div class="stack">Python · XGBoost · pandas · scikit-learn · Streamlit</div>
         <div class="links"><a class="u" href="https://credit-score-assessment.streamlit.app/" target="_blank" rel="noopener">live demo ↗</a></div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head"><span class="name"><span class="en">Linear algebra from scratch</span><span class="es">Álgebra lineal desde cero</span></span><span class="meta mono">numerical · ml</span></div>
+        <p class="en">LU, Cholesky, QR (Gram-Schmidt and Householder), SVD and the Moore-Penrose pseudoinverse implemented from scratch, then used to fit the last layer of a cats-vs-dogs image classifier, comparing accuracy, running time and numerical stability. A team project for my Computational Linear Algebra course; I wrote most of it.</p>
+        <p class="es">LU, Cholesky, QR (Gram-Schmidt y Householder), SVD y la pseudoinversa de Moore-Penrose implementadas desde cero, y usadas para ajustar la última capa de un clasificador de imágenes de perros y gatos, comparando precisión, tiempo de cómputo y estabilidad numérica. Un trabajo en equipo para la materia Álgebra Lineal Computacional; la mayor parte la escribí yo.</p>
+        <div class="stack">Python · NumPy · Jupyter</div>
+        <div class="links"><a class="u" href="https://github.com/ViniTENC/TP_ALC" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
       </div>
 
       <div class="entry">
