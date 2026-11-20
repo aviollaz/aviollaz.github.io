@@ -335,6 +335,14 @@
       </div>
 
       <div class="entry">
+        <div class="entry-head"><span class="name"><span class="en">Delivery-note finder</span><span class="es">Buscador de remitos</span></span><span class="meta mono">automation · ocr</span></div>
+        <p class="en">Finds scanned delivery notes by number for an accounting team that cross-checks them when entering invoices: <strong>~45,000 a year</strong>, saved under file names unrelated to their numbers. OCR runs locally because the documents are confidential. It re-reads the number area digits-only and votes between readings, flags doubtful reads instead of guessing, and turns a list of numbers into an Excel report. Used by <strong>3 people</strong>, it saves hours on every cross-check.</p>
+        <p class="es">Encuentra remitos escaneados por número para un equipo contable que los cruza al cargar facturas: <strong>unos 45.000 por año</strong>, guardados con nombres que no tienen nada que ver con su número. El OCR corre local porque los documentos son confidenciales. Relee la zona del número solo con dígitos y vota entre lecturas, marca las lecturas dudosas en vez de adivinar y convierte una lista de números en un reporte de Excel. Lo usan <strong>3 personas</strong> y ahorra horas en cada cruce.</p>
+        <div class="stack">Python · Tesseract · SQLite · PyMuPDF · openpyxl</div>
+        <div class="links"><a class="u" href="https://github.com/aviollaz/buscador-remitos-ocr" target="_blank" rel="noopener"><span class="en">code</span><span class="es">código</span> ↗</a></div>
+      </div>
+
+      <div class="entry">
         <div class="entry-head"><span class="name">Kernel x86</span><span class="meta mono">systems</span></div>
         <p class="en">A 32-bit kernel from scratch: protected mode, interrupts, per-task paging, system calls and a preemptive scheduler running four tasks.</p>
         <p class="es">Un kernel de 32 bits desde cero: modo protegido, interrupciones, paginación por tarea, llamadas al sistema y un scheduler preemptivo que corre cuatro tareas.</p>
